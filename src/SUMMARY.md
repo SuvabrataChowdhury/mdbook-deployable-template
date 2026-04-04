@@ -1,5 +1,5 @@
 # Summary
 
-[About This Template](./README.md)
+[Introduction](./README.md)
 
 - [Usage](./usage.md)

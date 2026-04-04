@@ -2,3 +2,6 @@
 title = "User Guide"
 authors = ["Suvabrata Chowdhury"]
 language = "en"
+
+[output.html]
+git-repository-url = "https://github.com/SuvabrataChowdhury/mdbook-deployable-template"
