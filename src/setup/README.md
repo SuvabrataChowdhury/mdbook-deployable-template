@@ -15,18 +15,32 @@ To use the infrastructure, follow these steps:
     - In your new repo, go to **About → Settings → Tick `Use your GitHub Pages website` → `Save Changes`**
 ![URL-in-description](image.png)
 
-## Local environment
-Before publishing online, you should write your content and test the site locally. You only need to do this once per machine.
+## Local environment setup
+Before publishing online, you should write your content and test the site locally. You only need to do the following steps once per machine.
 1. Install the [mdbook](https://rust-lang.github.io/mdBook/guide/installation.html) CLI.
     - On most systems this is just a single command (e.g., via cargo or a platform‑specific package manager).
-2. Ensure git is installed. If not follow this [Installation guide](https://git-scm.com/install/).
-2. Clone the repository you created in the [Repository setup](#repository-setup) step:
+2. Ensure git is installed. If not, follow this [Installation guide](https://git-scm.com/install/).
+3. Clone the repository you created in the [Repository setup](#repository-setup) step:
     ```bash
     git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
     cd YOUR-REPO
     ```
-3. Run the `init.sh` script to set up the local environment:
+    It is recommended to switch to a new branch before making changes:
     ```bash
+    git checkout -b init
+    ```
+    See [Git feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) for good practices.
+4. Run the `init.sh` script to set up the local environment:
+    ```bash
+    chmod +x init.sh
     ./init.sh
     ```
-> **Note:** This script is not yet included in the repository. In the meantime, authors can directly edit the existing files (e.g., SUMMARY.md and the src/ Markdown files) to start writing The init.sh script will be added soon to automate directory structure and basic configuration.
+    > **Note for Windows users**: The `init.sh` script may not work directly on Windows. You can run it inside [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install). A native Windows script will be added in the near future.
+5. Push the setup changes to your repo:
+    ```bash
+    git add .
+    git commit -m "init"
+    git push
+    ```
+    - If this is the first push, Git may report that the upstream branch is not set. The error message will include the command to set it (e.g., `git push --set-upstream origin init`).
+    - If you used a branch other than `main` (for example, `init`), you should open a pull request against `main` for the setup changes to take effect.

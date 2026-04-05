@@ -21,10 +21,6 @@ if ! command -v mdbook &> /dev/null; then
     echo ""
     echo "Install mdbook from: https://rust-lang.github.io/mdBook/guide/installation.html"
     echo ""
-    echo "Quick install (requires Rust/Cargo):"
-    echo "  curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
-    echo "  cargo install mdbook"
-    echo ""
     exit 1
 fi
 
@@ -109,7 +105,7 @@ echo ""
 echo "📚 Your book is ready to write!"
 echo ""
 echo "Next steps:"
-echo "  1. Edit src/README.md and chapters"
+echo "  1. Push current changes to GitHub: git add . && git commit -m 'init' && git push"
 echo "  2. Update src/SUMMARY.md if you add/remove chapters"
 echo "  3. Preview: mdbook serve"
 echo "  4. Push to GitHub: git add . && git commit -m 'Initial content' && git push"
