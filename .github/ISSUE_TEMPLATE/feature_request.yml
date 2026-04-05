@@ -36,8 +36,8 @@ body:
       label: 🔄 Alternatives Considered
       description: Are there other ways to solve this?
       placeholder: "Another approach could be..."
-      validations:
-        required: false
+    validations:
+      required: false
 
   - type: dropdown
     id: category
@@ -60,8 +60,8 @@ body:
       label: 📚 Examples or References
       description: Any examples, links, or similar projects?
       placeholder: "I saw this in project X..."
-      validations:
-        required: false
+    validations:
+      required: false
 
   - type: checkboxes
     id: checklist
