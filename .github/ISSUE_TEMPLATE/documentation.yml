@@ -53,8 +53,8 @@ body:
       label: 📝 Example Text (Optional)
       description: Feel free to write improved documentation!
       placeholder: "Here's an example of better wording..."
-      validations:
-        required: false
+    validations:
+      required: false
 
   - type: checkboxes
     id: checklist

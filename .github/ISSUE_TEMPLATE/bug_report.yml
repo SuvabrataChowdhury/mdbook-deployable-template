@@ -71,8 +71,8 @@ body:
       placeholder: |
         - mdbook version: 0.4.x
         - Git version: 2.x
-      validations:
-        required: false
+    validations:
+      required: false
 
   - type: textarea
     id: screenshots
@@ -80,8 +80,8 @@ body:
       label: 📸 Screenshots / Error Output
       description: If applicable, paste error messages or screenshots
       placeholder: "Paste error logs or screenshots here..."
-      validations:
-        required: false
+    validations:
+      required: false
 
   - type: checkboxes
     id: checklist
