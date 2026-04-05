@@ -89,6 +89,10 @@ rm -f .github/PULL_REQUEST_TEMPLATE.md
 cp -r .child-github/ISSUE_TEMPLATE .github/
 cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
 
+# Remove LICENSE and CONTRIBUTING.md in child repo as author should add them manually if needed.
+rm LICENSE
+rm CONTRIBUTING.md
+
 # Test if mdbook can build
 if mdbook build --dry-run > /dev/null 2>&1; then
     echo "✅ mdbook build test passed"
