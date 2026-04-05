@@ -1,0 +1,67 @@
+name: 📚 Documentation Improvement
+description: Help us improve our documentation
+title: "[DOCS] "
+labels: ["documentation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us make our documentation clearer and more helpful!
+
+  - type: dropdown
+    id: section
+    attributes:
+      label: 📖 Documentation Section
+      description: Which part of the documentation needs improvement?
+      options:
+        - README.md
+        - Setup Guide
+        - Deployment Flow
+        - FAQ
+        - Code Comments
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: 🔍 Current Issue
+      description: What's confusing or unclear about the current documentation?
+      placeholder: "The setup guide doesn't explain..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 💬 Suggested Improvement
+      description: How could we improve it?
+      placeholder: |
+        We could add:
+        - More examples
+        - Step-by-step screenshots
+        - Better explanations of...
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: 📝 Example Text (Optional)
+      description: Feel free to write improved documentation!
+      placeholder: "Here's an example of better wording..."
+      validations:
+        required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      options:
+        - label: I've read the current documentation
+          required: true
+        - label: I've searched for similar documentation issues
+          required: true
