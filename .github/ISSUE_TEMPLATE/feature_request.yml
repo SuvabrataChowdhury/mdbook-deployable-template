@@ -1,0 +1,74 @@
+name: ✨ Feature Request
+description: Suggest an idea to improve this template
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Help us understand your idea.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🤔 Problem or Use Case
+      description: What problem does this solve? Or what's your use case?
+      placeholder: "I want to be able to... because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Proposed Solution
+      description: How would you like this to work?
+      placeholder: |
+        The template could include...
+        Or users could be able to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives Considered
+      description: Are there other ways to solve this?
+      placeholder: "Another approach could be..."
+      validations:
+        required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 📂 Category
+      description: What area does this relate to?
+      options:
+        - Documentation
+        - Setup/Installation
+        - Deployment
+        - Theme/Design
+        - Automation/Scripts
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: 📚 Examples or References
+      description: Any examples, links, or similar projects?
+      placeholder: "I saw this in project X..."
+      validations:
+        required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      options:
+        - label: I've checked existing issues for similar requests
+          required: true
+        - label: This feature aligns with the project's goals
+          required: false

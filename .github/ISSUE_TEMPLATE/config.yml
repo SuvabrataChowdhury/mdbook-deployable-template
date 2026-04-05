@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/SuvabrataChowdhury/mdbook-deployable-template/discussions
+    about: Ask questions and share ideas in our community discussions
+  - name: 📖 Documentation
+    url: https://suvabratachowdhury.github.io/mdbook-deployable-template/
+    about: Check our full documentation for guides and tutorials
+  - name: 🔍 Search Issues
+    url: https://github.com/SuvabrataChowdhury/mdbook-deployable-template/issues
+    about: Search existing issues before creating a new one
