@@ -51,6 +51,7 @@ echo "📁 Setting up directories..."
 rm -rf ./src
 rm -rf ./book.toml
 
+# Use mdbook to build author's project
 mdbook init --title "$BOOK_TITLE" --ignore none .
 
 # Initialize book.toml with user's info
@@ -84,6 +85,13 @@ This is your book. Write your content here in Markdown format.
 Learn more: [mdbook documentation](https://rust-lang.github.io/mdBook/)
 EOF
 echo "✅ Created sample src/README.md"
+
+# Include child repo's pr and issue templates
+rm -rf .github/ISSUE_TEMPLATE/*
+rm -f .github/PULL_REQUEST_TEMPLATE.md
+
+cp -r .child-github/ISSUE_TEMPLATE .github/
+cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
 
 # Test if mdbook can build
 if mdbook build --dry-run > /dev/null 2>&1; then
