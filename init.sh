@@ -43,7 +43,8 @@ REPO_URL=${INPUT_REPO_URL:-$REPO_URL}
 echo ""
 echo "📁 Setting up directories..."
 
-# Remove existing mdbook files
+# Remove existing mdbook files except the theme
+cp -r ./src/theme .
 rm -rf ./src
 rm -rf ./book.toml
 
@@ -59,9 +60,16 @@ language = "en"
 
 [output.html]
 git-repository-url = "$REPO_URL"
+mathjax-support = false
+smart-punctuation = false
+theme = "src/theme"
 EOF
 
 echo "✅ Created book.toml with your project details"
+
+# Move theme back into src
+mv ./theme /src
+echo "✅ Created theme for your project"
 
 # Create sample README
 cat > README.md << EOF
