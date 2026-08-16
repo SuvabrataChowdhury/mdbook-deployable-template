@@ -5,6 +5,37 @@
 
 set -e  # Exit on any error
 
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Initialize your mdbook project from the deployable template."
+    echo ""
+    echo "Options:"
+    echo "  -t, --title <title>    Book title"
+    echo "  -a, --author <name>    Author name"
+    echo "  -r, --repo <url>       GitHub repository URL"
+    echo "  -h, --help             Show this help message"
+    echo ""
+    echo "If options are omitted, the script will prompt interactively."
+    echo ""
+    echo "Example:"
+    echo "  $0 --title \"My Book\" --author \"Jane Doe\" --repo https://github.com/jane/my-book"
+}
+
+BOOK_TITLE=""
+AUTHOR_NAME=""
+REPO_URL_ARG=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -t|--title)  BOOK_TITLE="$2";    shift 2 ;;
+        -a|--author) AUTHOR_NAME="$2";   shift 2 ;;
+        -r|--repo)   REPO_URL_ARG="$2";  shift 2 ;;
+        -h|--help)   usage; exit 0 ;;
+        *) echo "Unknown option: $1"; usage; exit 1 ;;
+    esac
+done
+
 echo "🚀 Initializing your mdbook project..."
 echo ""
 
@@ -27,23 +58,32 @@ fi
 echo "✅ mdbook is installed"
 echo ""
 
-# Collect user information
+# Collect user information (prompt only for values not provided as arguments)
 echo "📋 Project Configuration"
 echo "========================"
 echo ""
 
-read -p "📕 Book title: " BOOK_TITLE
-read -p "✍️  Author name: " AUTHOR_NAME
+if [[ -z "$BOOK_TITLE" ]]; then
+    read -p "📕 Book title: " BOOK_TITLE
+    [[ -z "$BOOK_TITLE" ]] && { echo "❌ Book title is required."; exit 1; }
+fi
+if [[ -z "$AUTHOR_NAME" ]]; then
+    read -p "✍️  Author name: " AUTHOR_NAME
+    [[ -z "$AUTHOR_NAME" ]] && { echo "❌ Author name is required."; exit 1; }
+fi
 
-# Get repo URL from git config if available
-REPO_URL=$(git config --get remote.origin.url 2>/dev/null || echo "https://github.com/your-username/your-repo")
-read -p "🔗 GitHub repository URL [$REPO_URL]: " INPUT_REPO_URL
-REPO_URL=${INPUT_REPO_URL:-$REPO_URL}
+if [[ -n "$REPO_URL_ARG" ]]; then
+    REPO_URL="$REPO_URL_ARG"
+else
+    read -p "🔗 GitHub repository URL: " REPO_URL
+    [[ -z "$REPO_URL" ]] && { echo "❌ Repository URL is required."; exit 1; }
+fi
 
 echo ""
 echo "📁 Setting up directories..."
 
-# Remove existing mdbook files
+# Remove existing mdbook files except the theme
+cp -r ./src/theme ./
 rm -rf ./src
 rm -rf ./book.toml
 
@@ -59,9 +99,17 @@ language = "en"
 
 [output.html]
 git-repository-url = "$REPO_URL"
+mathjax-support = false
+smart-punctuation = false
+theme = "src/theme"
 EOF
 
 echo "✅ Created book.toml with your project details"
+
+# Move theme back into src
+mv theme src/
+# rm -rf ./theme # TODO: Add it back
+echo "✅ Created theme for your project"
 
 # Create sample README
 cat > README.md << EOF

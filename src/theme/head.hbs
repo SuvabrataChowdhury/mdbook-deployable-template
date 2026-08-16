@@ -1,0 +1,90 @@
+<!-- KaTeX CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<!-- pseudocode.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+
+<!-- KaTeX JS -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+<!-- KaTeX auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- pseudocode.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+
+<!-- site icon-->
+<link rel="icon" href="/theme/favicon.ico">
+
+<!-- GeoGebra API -->
+<script defer src="https://www.geogebra.org/apps/deployggb.js"></script>
+
+<style>
+  .ggb-container { width: 100%; max-width: 100%; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; }
+</style>
+
+<!-- Mermaid -->
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false });
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("pre code.language-mermaid").forEach((block) => {
+      const source = block.textContent;
+      const container = document.createElement("div");
+      container.classList.add("mermaid");
+      container.textContent = source;
+      block.parentElement.replaceWith(container);
+    });
+    mermaid.run();
+  });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ✅ Render LaTeX with KaTeX
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false }
+    ],
+    throwOnError: false
+  });
+
+  // ✅ Render pseudocode blocks
+  document.querySelectorAll("pre code.language-pseudocode").forEach((block) => {
+    const parent = block.parentElement;
+    const code = block.textContent;
+
+    const container = document.createElement("div");
+
+    try {
+      pseudocode.render(code, container, {
+        lineNumber: true
+      });
+      parent.replaceWith(container);
+    } catch (err) {
+      console.error("Pseudocode rendering error:", err);
+    }
+  });
+
+  // ✅ Initialize GeoGebra applets
+  document.querySelectorAll("div[data-ggb-id]").forEach((div, i) => {
+    if (!div.id) div.id = "ggb-auto-" + i;
+    div.classList.add("ggb-container");
+    const applet = new GGBApplet({
+      material_id: div.getAttribute("data-ggb-id"),
+      scaleContainerClass: "ggb-container",
+      autoHeight: true,
+      width: 800,
+      height: 500,
+      showToolBar: false,
+      showAlgebraInput: false,
+      showMenuBar: false,
+    }, true);
+    applet.inject(div.id);
+  });
+
+});
+</script>
