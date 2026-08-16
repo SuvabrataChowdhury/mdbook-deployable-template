@@ -44,7 +44,7 @@ echo ""
 echo "📁 Setting up directories..."
 
 # Remove existing mdbook files except the theme
-cp -r ./src/theme .
+cp -r ./src/theme ./
 rm -rf ./src
 rm -rf ./book.toml
 
@@ -68,7 +68,8 @@ EOF
 echo "✅ Created book.toml with your project details"
 
 # Move theme back into src
-mv ./theme /src
+mv theme src/
+# rm -rf ./theme # TODO: Add it back
 echo "✅ Created theme for your project"
 
 # Create sample README
