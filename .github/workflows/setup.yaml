@@ -1,0 +1,61 @@
+name: Init Repository
+on:
+  workflow_dispatch:
+    inputs:
+      book_title:
+        description: 'Title of your book'
+        required: true
+      author_name:
+        description: 'Author of the book'
+        required: true
+
+jobs:
+  initialize-repo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout Repository Default Branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Set branch name
+        run: echo "NEW_BRANCH=init-repo-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+      - name: Branch off for new changes
+        run: |
+          git checkout -b "$NEW_BRANCH"
+      - name: Install mdBook
+        env:
+          MDBOOK_VERSION: 0.5.4
+        run: |
+          curl -sSL --fail "https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | tar -xz
+          mv mdbook /usr/local/bin/
+      - name: Make initial changes
+        env:
+          BOOK_TITLE: ${{ inputs.book_title }}
+          AUTHOR_NAME: ${{ inputs.author_name }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          bash ./init.sh --title "$BOOK_TITLE" --author "$AUTHOR_NAME" --repo "$REPO_URL"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: initialize book - $BOOK_TITLE"
+          git push -u origin "$NEW_BRANCH"
+
+      - name: Validate and Create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SRC: ${{ env.NEW_BRANCH }}
+          TG: ${{ github.event.repository.default_branch }}
+          BOOK_TITLE: ${{ inputs.book_title }}
+          AUTHOR_NAME: ${{ inputs.author_name }}
+        run: |
+          echo "🚀 Creating pull request..."
+          gh pr create \
+            --title "chore: initialize book $BOOK_TITLE by $AUTHOR_NAME" \
+            --body "Created manually via workflow UI." \
+            --base "$TG" \
+            --head "$SRC"
