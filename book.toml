@@ -5,3 +5,7 @@ language = "en"
 
 [output.html]
 git-repository-url = "https://github.com/SuvabrataChowdhury/mdbook-deployable-template"
+site-url = "/mdbook-deployable-template/"
+mathjax-support = false
+smart-punctuation = false
+theme = "src/theme"
