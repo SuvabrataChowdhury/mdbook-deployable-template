@@ -3,7 +3,7 @@
 # mdbook-deployable-template initialization script
 # Run this once after cloning a repo created from the template
 
-set -e  # Exit on any error
+set -euo pipefail  # Exit on any error
 
 usage() {
     echo "Usage: $0 [OPTIONS]"
