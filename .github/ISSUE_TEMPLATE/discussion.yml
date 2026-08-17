@@ -1,0 +1,50 @@
+name: 💬 Discussion Topic
+description: Start a discussion about the content or project
+title: "[DISCUSSION] "
+labels: ["discussion"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Want to discuss something? Start a conversation!
+
+  - type: textarea
+    id: topic
+    attributes:
+      label: 🎯 Topic
+      description: What would you like to discuss?
+      placeholder: |
+        Examples:
+        - How do you usually approach...?
+        - What's the best way to...?
+        - Thoughts on...?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 📖 Context
+      description: Any background or related sections?
+      placeholder: "Related to Chapter X..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: thoughts
+    attributes:
+      label: 💭 Your Thoughts
+      description: What are you thinking about this topic?
+      placeholder: "I believe... because..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Before Posting
+      options:
+        - label: This is a topic worth discussing
+          required: true
