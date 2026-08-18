@@ -1,0 +1,68 @@
+name: ✨ Enhancement
+description: Suggest improvements to the content or structure
+title: "[ENHANCEMENT] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make this better? We'd love to hear it!
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: 💡 Your Idea
+      description: What enhancement would you like?
+      placeholder: |
+        Examples:
+        - Add a new chapter about...
+        - Reorganize the table of contents...
+        - Add more examples for...
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: 🤔 Why Would This Help?
+      description: What problem does this solve or improve?
+      placeholder: "This would be helpful because..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 📂 Type of Enhancement
+      description: What kind of improvement?
+      options:
+        - New Chapter/Section
+        - Better Examples
+        - Clearer Explanation
+        - Visual Improvement
+        - Reorganization
+        - Additional Resources
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 📋 Additional Details
+      description: Any other context or suggestions?
+      placeholder: "You could also..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      options:
+        - label: This enhancement fits the scope of this project
+          required: true
+        - label: I've searched for similar suggestions
+          required: true
