@@ -35,7 +35,7 @@ jobs:
           bash ./init.sh --title "$BOOK_TITLE" --author "$AUTHOR_NAME" --repo "$REPO_URL"
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: initialize book - ${{ inputs.book_title }}"
