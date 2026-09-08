@@ -1,0 +1,42 @@
+version: "0.2"
+language: en
+
+# Automatically import dictionaries for markdown, html, and software terms
+import:
+  - "@cspell/dict-markdown/cspell-ext.json"
+  - "@cspell/dict-html/cspell-ext.json"
+
+# Tells the engine to look inside Markdown prose but ignore syntax blocks
+enabledLanguageIds:
+  - markdown
+
+# Crucial: Define what patterns to ignore completely
+ignoreRegExpList:
+  - "latex"            # Matches custom LaTeX identifiers
+  - "math"             # Matches inline and block math equations
+  - "code-blocks"      # Skips standard markdown ```code``` segments
+  - "urls"             # Skips web addresses
+  - "href"             # Skips HTML links
+
+# Define regex patterns for complex blocks like LaTeX and Mermaid
+languageSettings:
+  - languageId: markdown
+    ignoreRegExpList:
+      # Ignore everything inside LaTeX math blocks: $$ ... $$
+      - "/\\$\\$[\\s\\S]*?\\$\\$/g"
+      # Ignore everything inside inline math: $ ... $
+      - "/\\$[\\s\\S]*?\\$/g"
+      # Ignore Mermaid diagram code blocks specifically
+      - "/```mermaid[\\s\\S]*?```/g"
+      # Ignore HTML tags if you use them in notes
+      - "/<[a-zA-Z\\/][^>]*>/g"
+
+# Whitelist specific keywords or software terms you use often
+words:
+  - mermaid
+  - mdbook
+  - latex
+  - katex
+  # TODO: Author name should come dynamically from configs
+  - Suvabrata
+  - Chowdhury
