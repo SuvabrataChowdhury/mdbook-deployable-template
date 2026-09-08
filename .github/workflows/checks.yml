@@ -1,0 +1,27 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: 
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  spell-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v7
+      - name: Check Spellings
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          # Target only your Markdown files
+          files: "**/*.md"
+          # Ensures it reads your custom config file
+          config: "cspell.config.yml"
+        
