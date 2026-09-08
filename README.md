@@ -15,6 +15,7 @@ Use this template to create and publish blog-style websites, technical documenta
 - **Professional look** — Clean, readable design out of the box.
 
 **Perfect for:**
+
 - Students writing notes or tutorials
 - Authors publishing short books or technical guides
 - Educators sharing course material
@@ -42,6 +43,7 @@ Use this template to create and publish blog-style websites, technical documenta
 ### 🌐 **[mdbook-deployable-template Documentation](https://suvabratachowdhury.github.io/mdbook-deployable-template/)**
 
 The documentation includes:
+
 - **[Setup Guide](https://suvabratachowdhury.github.io/mdbook-deployable-template/setup/)** — Complete setup instructions with all the details
 - **[Deployment Flow](https://suvabratachowdhury.github.io/mdbook-deployable-template/deployment-flow/)** — How automatic deployment works and manual deployment options
 
@@ -50,6 +52,7 @@ The documentation includes:
 ## 📚 What You'll Learn
 
 On the documentation website, you'll find:
+
 - ✅ How to create your repository from this template
 - ✅ How to enable GitHub Pages in your repository
 - ✅ How to install and use mdbook locally
@@ -83,7 +86,7 @@ Check the [full documentation](https://suvabratachowdhury.github.io/mdbook-deplo
 
 We welcome contributions! Found a bug? Have an idea? Want to share your success story?
 
-- **Report issues** → [GitHub Issues](https://github.com/SuvabrataChowdhury/mdbook-deployable-template/issues)
+- **Report issues** → [GitHub Issues](https://github.com/SuvabrataChowdhury/mdbook-deployable-templatessaflk/issues)
 - **Ask questions** → [GitHub Discussions](https://github.com/SuvabrataChowdhury/mdbook-deployable-template/discussions)
 - **Share your site** → [Showcases Discussion](https://github.com/SuvabrataChowdhury/mdbook-deployable-template/discussions/categories/showcases)
 
@@ -100,6 +103,7 @@ This project is open source. See [LICENSE](LICENSE) for details.
 ## 🌟 Show Your Support
 
 If this template helped you, please consider:
+
 - ⭐ **Starring** this repository
 - 🔄 **Sharing** it with others
 - 💬 **Leaving feedback** in Discussions
