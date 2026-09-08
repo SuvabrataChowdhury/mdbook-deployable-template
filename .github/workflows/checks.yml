@@ -26,3 +26,6 @@ jobs:
           config: "cspell.config.yml"
       - name: Check Markdown Links
         uses: tcort/github-action-markdown-link-check@v1
+        with:
+          check-modified-files-only: yes
+          base-branch: main
