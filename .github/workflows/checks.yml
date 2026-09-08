@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    types: 
+    types:
       - opened
       - synchronize
       - reopened
@@ -24,4 +24,5 @@ jobs:
           files: "**/*.md"
           # Ensures it reads your custom config file
           config: "cspell.config.yml"
-        
+      - name: Check Markdown Links
+        uses: tcort/github-action-markdown-link-check@v1
