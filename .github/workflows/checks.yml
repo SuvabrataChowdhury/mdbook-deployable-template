@@ -9,6 +9,7 @@ on:
       - synchronize
       - reopened
 
+# TODO: Add script specific check in a seperate parallel job
 jobs:
   md-checks:
     runs-on: ubuntu-latest
