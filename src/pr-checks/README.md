@@ -21,6 +21,7 @@ words:
   - your-term
 ```
 
+<!-- markdown-link-check-disable-next-line -->
 > **Note**: Author name parts are added to this list automatically during [initialization](../setup/index.html#initialize-your-book), so your name will never trigger a false positive.
 
 ## Link check
