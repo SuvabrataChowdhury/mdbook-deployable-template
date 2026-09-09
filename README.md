@@ -1,6 +1,6 @@
 # 📖 mdbook-deployable-template
 
-**Publishaslfdj a professional, auto-deployed static site with just Markdown—no coding required.**
+**Publish a professional, auto-deployed static site with just Markdown—no coding required.**
 
 Use this template to create and publish blog-style websites, technical documentation, study guides, or any readable content. Write in Markdown, push to GitHub, and your site is live. That's it.
 
