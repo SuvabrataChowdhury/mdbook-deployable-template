@@ -43,7 +43,7 @@ No local tooling required for this step — works on all platforms including Win
 ### Via init.sh
 > **Windows users**: The `init.sh` script requires a Unix shell. Use the [GitHub Actions approach](#via-github-actions-recommended) above instead, or run the script inside [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-1. Install [yq](https://mikefarah.gitbook.io/yq#install), required by the init script. This is a one-time dependency — you won't need it after initialisation.
+1. Install [yq](https://mikefarah.gitbook.io/yq#install), required by the init script. This is a one-time dependency — you won't need it after initialization.
 2. Switch to a new branch before making changes:
     ```bash
     git checkout -b init

@@ -7,7 +7,7 @@ Every pull request targeting `main` is automatically validated by the **PR Check
 Markdown files are checked for spelling errors using [cspell](https://cspell.org/).
 
 - Misspelled words are surfaced as inline warning annotations directly on the PR diff.
-- The check fails the PR if any unrecognised words are found.
+- The check fails the PR if any unrecognized words are found.
 - Only Markdown files (`**/*.md`) are checked.
 
 ### Adding words to the allowlist
@@ -18,10 +18,10 @@ If a word is flagged but is intentional (a technical term, a proper noun, etc.),
 words:
   - mermaid
   - mdbook
-  - yourterm
+  - your-term
 ```
 
-> **Note**: Author name parts are added to this list automatically during [initialisation](../setup/index.html#initialize-your-book), so your name will never trigger a false positive.
+> **Note**: Author name parts are added to this list automatically during [initialization](../setup/index.html#initialize-your-book), so your name will never trigger a false positive.
 
 ## Link check
 
