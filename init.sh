@@ -42,6 +42,7 @@ echo ""
 # Check if Git is installed
 if ! command -v git &> /dev/null; then
     echo "❌ Git is not installed. Please install Git first."
+    echo ""
     echo "   Visit: https://git-scm.com/install"
     exit 1
 fi
@@ -51,6 +52,14 @@ if ! command -v mdbook &> /dev/null; then
     echo "⚠️  mdbook is not installed."
     echo ""
     echo "Install mdbook from: https://rust-lang.github.io/mdBook/guide/installation.html"
+    echo ""
+    exit 1
+fi
+
+if ! command -v yq &> /dev/null; then
+    echo "⚠️  yq is not installed."
+    echo ""
+    echo "Install yq from: https://mikefarah.gitbook.io/yq"
     echo ""
     exit 1
 fi
@@ -129,6 +138,18 @@ This is your book. Write your content here in Markdown format.
 Learn more: [mdbook documentation](https://rust-lang.github.io/mdBook/)
 EOF
 echo "✅ Created sample src/README.md"
+
+# cspell.config.yml changes
+# yq '.words = ["mermaid", "mdbook", "latex", "katex"]' -i cspell.config.yml
+WORDS_STRING='["mermaid", "mdbook", "latex", "katex"'
+
+read -ra AUTHOR_NAME_PARTS <<< "$AUTHOR_NAME"
+for name_part in "${AUTHOR_NAME_PARTS[@]}"; do
+	WORDS_STRING="$WORDS_STRING, \"$name_part\""
+done
+WORDS_STRING="$WORDS_STRING]"
+
+yq ".words = $WORDS_STRING" -i cspell.config.yml
 
 # Include child repo's pr and issue templates
 rm -rf .github/ISSUE_TEMPLATE/*
