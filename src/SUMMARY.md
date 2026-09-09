@@ -5,4 +5,4 @@
 # User Guide
 
 - [Setup](./setup/README.md)
-- [Deployment Flow](./deployment-flowasfdl/README.md)
+- [Deployment Flow](./deployment-flow/README.md)
