@@ -37,6 +37,5 @@ words:
   - mdbook
   - latex
   - katex
-  # TODO: Author name should come dynamically from configs
   - Suvabrata
   - Chowdhury

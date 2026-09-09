@@ -43,17 +43,18 @@ No local tooling required for this step — works on all platforms including Win
 ### Via init.sh
 > **Windows users**: The `init.sh` script requires a Unix shell. Use the [GitHub Actions approach](#via-github-actions-recommended) above instead, or run the script inside [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-1. Switch to a new branch before making changes:
+1. Install [yq](https://mikefarah.gitbook.io/yq#install), required by the init script. This is a one-time dependency — you won't need it after initialisation.
+2. Switch to a new branch before making changes:
     ```bash
     git checkout -b init
     ```
     See [Git feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) for good practices.
-2. Run the `init.sh` script:
+3. Run the `init.sh` script:
     ```bash
     chmod +x init.sh
     ./init.sh
     ```
-3. Push the setup changes to your repo:
+4. Push the setup changes to your repo:
     ```bash
     git add .
     git commit -m "init"
