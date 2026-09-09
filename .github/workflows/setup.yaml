@@ -32,7 +32,7 @@ jobs:
           YQ_PLATFORM: linux_amd64
         run: |
           wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM}.tar.gz -O - |\
-          tar xz yq_${YQ_PLATFORM} && mv yq_${YQ_PLATFORM} /usr/local/bin/yq
+          tar xz ./yq_${YQ_PLATFORM} && mv yq_${YQ_PLATFORM} /usr/local/bin/yq
       - name: Make initial changes
         env:
           BOOK_TITLE: ${{ inputs.book_title }}
