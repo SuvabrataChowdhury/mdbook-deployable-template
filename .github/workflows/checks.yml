@@ -1,0 +1,44 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+# TODO: Add script specific check in a seperate parallel job
+jobs:
+  md-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      checks: write
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check Spellings
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          # Target only your Markdown files
+          files: "**/*.md"
+          # Ensures it reads your custom config file
+          config: "cspell.config.yml"
+          # Enable spelling suggestions inside the PR logs/annotations
+          suggestions: true
+          # Only check files added/modified in this specific PR
+          incremental_files_only: true
+          # Create visible warning annotations on the PR file diff
+          inline: warning
+          # Force the action to pass or fail based on typos
+          strict: true
+      - name: Check Markdown Links
+        uses: tcort/github-action-markdown-link-check@v1
+        with:
+          check-modified-files-only: yes
+          base-branch: main
