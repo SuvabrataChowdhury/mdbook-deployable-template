@@ -1,13 +1,12 @@
 name: 'Lint PR'
 
 on:
-  # TODO: keep pull_request_target.. remove pull_request which has been added for testing purpose
-  # pull_request_target:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
       - edited
+      - synchronize
 
 jobs:
   check-pr-title:
