@@ -2,7 +2,6 @@ name: 📚 Documentation Improvement
 description: Help us improve our documentation
 title: "[DOCS] "
 labels: ["documentation"]
-assignees: []
 
 body:
   - type: markdown
