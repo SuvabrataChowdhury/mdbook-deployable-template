@@ -149,7 +149,7 @@ done
 # Include child repo's pr and issue templates
 rm -rf .github/ISSUE_TEMPLATE/*
 rm -f .github/PULL_REQUEST_TEMPLATE.md
-rm -f .github/dependabot.yml
+rm -f .github/dependabot.yml	# TODO: check if removing dependabot is a good idea for child repo
 
 cp -r .child-github/ISSUE_TEMPLATE .github/
 cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
