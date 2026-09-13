@@ -13,6 +13,7 @@ runs:
   using: composite
   steps:
     - name: Install yq
+      shell: bash
       env:
         YQ_VERSION: ${{inputs.yq-version}}
         YQ_PLATFORM: ${{inputs.yq-platform}}
