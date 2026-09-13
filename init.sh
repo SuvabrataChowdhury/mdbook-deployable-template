@@ -150,6 +150,7 @@ done
 rm -rf .github/ISSUE_TEMPLATE/*
 rm -f .github/PULL_REQUEST_TEMPLATE.md
 rm -f .github/dependabot.yml	# TODO: check if removing dependabot is a good idea for child repo
+rm -f .github/workflows/lint_pr.yml # as child repo do not this these checks
 
 cp -r .child-github/ISSUE_TEMPLATE .github/
 cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
