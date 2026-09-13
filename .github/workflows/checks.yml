@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check Spellings
-        uses: streetsidesoftware/cspell-action@v6
+        uses: streetsidesoftware/cspell-action@v9
         with:
           # Target only your Markdown files
           files: "**/*.md"
