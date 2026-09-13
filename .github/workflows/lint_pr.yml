@@ -10,6 +10,7 @@ on:
 
 jobs:
   check-pr-title:
+    if: github.actor != 'github-actions[bot]'
     name: Validate PR title
     runs-on: ubuntu-slim
     permissions:
@@ -30,4 +31,11 @@ jobs:
           requireScope: true
           headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
           headerPatternCorrespondence: type, scope, subject
+  skip-for-bot:
+    if: github.actor == 'github-actions[bot]'
+    name: Skip for bot PRs
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Skipping lint for bot PR" 
 
