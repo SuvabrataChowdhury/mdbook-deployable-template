@@ -45,7 +45,7 @@ jobs:
           branch: init-repo
           branch-suffix: timestamp
           base: ${{ github.event.repository.default_branch }}
-          title: "chore: initialize book ${{ inputs.book_title }} by ${{ inputs.author_name }}"
+          title: "chore(doc): Initialize book ${{ inputs.book_title }} by ${{ inputs.author_name }}"
           body: |
             ## Initialize repository
 
