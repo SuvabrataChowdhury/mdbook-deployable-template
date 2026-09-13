@@ -12,6 +12,7 @@ on:
 # TODO: Add script specific check in a seperate parallel job
 jobs:
   md-checks:
+    name: Markdown Checks
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
