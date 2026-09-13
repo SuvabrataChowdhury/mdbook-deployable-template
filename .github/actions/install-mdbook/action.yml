@@ -4,7 +4,7 @@ description: Composite actions for installing mdbook
 inputs:
   mdbook-version:
     required: true
-    description: Version of the the mdbook to be installed
+    description: Version of mdbook to be installed
 
 runs:
   using: composite
