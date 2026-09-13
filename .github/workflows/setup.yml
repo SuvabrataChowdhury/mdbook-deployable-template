@@ -26,6 +26,7 @@ jobs:
       - uses: ./.github/actions/install-yq
         with:
           yq-version: v4.53.3
+          yq-platform: linux_amd64
       - name: Make initial changes
         env:
           BOOK_TITLE: ${{ inputs.book_title }}

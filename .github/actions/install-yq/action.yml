@@ -5,6 +5,9 @@ inputs:
   yq-version:
     required: true
     description: Version of the the yq to be installed
+  yq-platform:
+    required: true
+    description: Version of the the yq to be installed
 
 runs:
   using: composite
@@ -12,7 +15,7 @@ runs:
     - name: Install yq
       env:
         YQ_VERSION: ${{inputs.yq-version}}
-        YQ_PLATFORM: linux_amd64
+        YQ_PLATFORM: ${{inputs.yq-platform}}
       run: |
         wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM}.tar.gz -O - |\
         tar xz ./yq_${YQ_PLATFORM} && mv yq_${YQ_PLATFORM} /usr/local/bin/yq
