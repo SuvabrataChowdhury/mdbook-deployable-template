@@ -23,13 +23,9 @@ jobs:
       - uses: ./.github/actions/install-mdbook
         with:
           mdbook-version: 0.5.4
-      - name: Install yq
-        env:
-          YQ_VERSION: v4.53.3
-          YQ_PLATFORM: linux_amd64
-        run: |
-          wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM}.tar.gz -O - |\
-          tar xz ./yq_${YQ_PLATFORM} && mv yq_${YQ_PLATFORM} /usr/local/bin/yq
+      - uses: ./.github/actions/install-yq
+        with:
+          yq-version: v4.53.3
       - name: Make initial changes
         env:
           BOOK_TITLE: ${{ inputs.book_title }}
