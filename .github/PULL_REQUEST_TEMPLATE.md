@@ -11,7 +11,7 @@
 - [ ] Other (please describe)
 
 ## Related Issue
-> Link to the issue this PR addresses (e.g., Fixes #7)
+> Link to the issue this PR addresses (e.g., Fixes #<Issue Number>)
 
 Fixes #
 
