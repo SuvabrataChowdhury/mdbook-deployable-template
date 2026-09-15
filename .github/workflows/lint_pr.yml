@@ -42,21 +42,6 @@ on:
       - edited
       - synchronize
 
-# Configure your allowed types right here as a clean YAML list
-env:
-  ALLOWED_TYPES: >-
-    [
-      "feat",
-      "fix",
-      "chore"
-    ]
-  ALLOWED_SCOPES: >-
-    [
-      "script",
-      "doc",
-      "ci"
-    ]
-
 jobs:
   check-pr-title:
     name: Validate PR title
@@ -66,8 +51,8 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          TYPES_PATTERN=$(echo '${{ env.ALLOWED_TYPES }}' | python3 -c "import sys,json; print('|'.join(json.load(sys.stdin)))")
-          SCOPES_PATTERN=$(echo '${{ env.ALLOWED_SCOPES }}' | python3 -c "import sys,json; print('|'.join(json.load(sys.stdin)))")
+          TYPES_PATTERN="feat|fix|chore"
+          SCOPES_PATTERN="script|doc|ci"
 
           # Regex pattern for Conventional Commits
           # Matches: feat: description, fix(scope): description, chore!: description
