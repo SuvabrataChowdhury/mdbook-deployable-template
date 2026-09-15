@@ -1,0 +1,52 @@
+name: 📝 Content Issue
+description: Report a problem with content (typo, unclear explanation, etc.)
+title: "[CONTENT] "
+labels: ["content"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Found an issue with the content? Help us improve!
+
+  - type: textarea
+    id: location
+    attributes:
+      label: 📍 Where is the issue?
+      description: Which chapter/section has the problem?
+      placeholder: |
+        Chapter: "Chapter 3: Advanced Topics"
+        Section: "3.2 Configuration"
+        Or URL: (paste the link to the page)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: ❌ What's the issue?
+      description: Describe the problem (typo, unclear wording, incorrect info, etc.)
+      placeholder: |
+        - Typo on line X
+        - This explanation doesn't make sense because...
+        - The code example is incorrect...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: ✅ Suggested Fix (Optional)
+      description: Have a fix in mind? Share it!
+      placeholder: "The text should say..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      options:
+        - label: I've verified this issue exists
+          required: true
