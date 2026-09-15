@@ -1,3 +1,37 @@
+# name: 'Lint PR'
+#
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - reopened
+#       - edited
+#       - synchronize
+#
+# jobs:
+#   check-pr-title:
+#     name: Validate PR title
+#     runs-on: ubuntu
+#     permissions:
+#       pull-requests: read
+#     steps:
+#       - uses: amannn/action-semantic-pull-request@v6
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           types: |
+#             fix
+#             feat
+#             chore
+#           scopes: |
+#             script
+#             doc
+#             ci
+#           requireScope: true
+#           headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
+#           headerPatternCorrespondence: type, scope, subject
+#
+
 name: 'Lint PR'
 
 on:
@@ -8,26 +42,40 @@ on:
       - edited
       - synchronize
 
-jobs:
-  check-pr-title:
-    name: Validate PR title
-    runs-on: ubuntu-slim
-    permissions:
-      pull-requests: read
-    steps:
-      - uses: amannn/action-semantic-pull-request@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          types: |
-            fix
-            feat
-            chore
-          scopes: |
-            script
-            doc
-            ci
-          requireScope: true
-          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
-          headerPatternCorrespondence: type, scope, subject
+# Configure your allowed types right here as a clean YAML list
+env:
+  ALLOWED_TYPES: >-
+    [
+      "feat",
+      "fix",
+      "chore",
+    ]
+  ALLOWED_SCOPES: >-
+    [
+      "script",
+      "doc",
+      "ci"
+    ]
 
+jobs:
+  lint-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Title Format
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          TYPES_PATTERN: ${{ join(fromJSON(env.ALLOWED_TYPES), '|') }}
+          SCOPES_PATTERN: ${{ join(fromJSON(env.ALLOWED_SCOPES), '|') }}
+        run: |
+          # Regex pattern for Conventional Commits
+          # Matches: feat: description, fix(scope): description, chore!: description
+          REGEX="^($TYPES_PATTERN)(\($SCOPES_PATTERN\))?!?: .+$"
+          
+          if [[ ! "$PR_TITLE" =~ $REGEX ]]; then
+            echo "::error title=Invalid PR Title::The PR title '$PR_TITLE' is not valid."
+            echo "Please use the format: <type>(<scope>): <description>"
+            echo "Example: feat(script): added new mdbook plugin"
+            exit 1
+          fi
+
+          echo "PR title is valid!"
