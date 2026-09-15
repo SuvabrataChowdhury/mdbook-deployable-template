@@ -58,7 +58,8 @@ env:
     ]
 
 jobs:
-  lint-title:
+  check-pr-title:
+    name: Validate PR title
     runs-on: ubuntu-latest
     steps:
       - name: Check Title Format
