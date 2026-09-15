@@ -56,7 +56,7 @@ jobs:
 
           # Regex pattern for Conventional Commits
           # Matches: feat: description, fix(scope): description, chore!: description
-          REGEX="^($TYPES_PATTERN)(\($SCOPES_PATTERN\))?!?: .+$"
+          REGEX="^($TYPES_PATTERN)(\(($SCOPES_PATTERN)\))?!?: .+$"
 
           if [[ ! "$PR_TITLE" =~ $REGEX ]]; then
             echo "::error title=Invalid PR Title::The PR title '$PR_TITLE' is not valid."
