@@ -48,7 +48,7 @@ env:
     [
       "feat",
       "fix",
-      "chore",
+      "chore"
     ]
   ALLOWED_SCOPES: >-
     [
