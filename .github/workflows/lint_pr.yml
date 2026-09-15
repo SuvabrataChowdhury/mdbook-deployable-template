@@ -65,13 +65,14 @@ jobs:
       - name: Check Title Format
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
-          TYPES_PATTERN: ${{ join(fromJSON(env.ALLOWED_TYPES), '|') }}
-          SCOPES_PATTERN: ${{ join(fromJSON(env.ALLOWED_SCOPES), '|') }}
         run: |
+          TYPES_PATTERN=$(echo '${{ env.ALLOWED_TYPES }}' | python3 -c "import sys,json; print('|'.join(json.load(sys.stdin)))")
+          SCOPES_PATTERN=$(echo '${{ env.ALLOWED_SCOPES }}' | python3 -c "import sys,json; print('|'.join(json.load(sys.stdin)))")
+
           # Regex pattern for Conventional Commits
           # Matches: feat: description, fix(scope): description, chore!: description
           REGEX="^($TYPES_PATTERN)(\($SCOPES_PATTERN\))?!?: .+$"
-          
+
           if [[ ! "$PR_TITLE" =~ $REGEX ]]; then
             echo "::error title=Invalid PR Title::The PR title '$PR_TITLE' is not valid."
             echo "Please use the format: <type>(<scope>): <description>"
