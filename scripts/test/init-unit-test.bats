@@ -106,11 +106,13 @@ teardown() {
 # ---------------------------------------------------------------------------
 
 @test "exits 1 when git is not installed" {
-    local fake_bin
+    local fake_bin bash_bin
     fake_bin="$(mktemp -d)"
-    # Keep system dirs so bash internals work; just omit git
-
-    run env PATH="$fake_bin:/usr/bin:/bin" bash "$INIT_SCRIPT" -t T -a A -r http://x
+    bash_bin="$(command -v bash)"
+    # env -i gives a clean environment with no inherited PATH.
+    # Bash is invoked by absolute path so it doesn't need to be on PATH.
+    # fake_bin has no git stub, so command -v git returns not-found on any OS.
+    run env -i PATH="$fake_bin" HOME="$HOME" "$bash_bin" "$INIT_SCRIPT" -t T -a A -r http://x
     [ "$status" -ne 0 ]
     [[ "$output" == *"Git is not installed"* ]]
 
@@ -118,13 +120,13 @@ teardown() {
 }
 
 @test "exits 1 when mdbook is not installed" {
-    local fake_bin
+    local fake_bin bash_bin
     fake_bin="$(mktemp -d)"
+    bash_bin="$(command -v bash)"
     printf '#!/bin/sh\nexit 0\n' > "$fake_bin/git"
     chmod +x "$fake_bin/git"
-    # no mdbook
 
-    run env PATH="$fake_bin:/usr/bin:/bin" bash "$INIT_SCRIPT" -t T -a A -r http://x
+    run env -i PATH="$fake_bin" HOME="$HOME" "$bash_bin" "$INIT_SCRIPT" -t T -a A -r http://x
     [ "$status" -ne 0 ]
     [[ "$output" == *"mdbook is not installed"* ]]
 
@@ -132,15 +134,14 @@ teardown() {
 }
 
 @test "exits 1 when yq is not installed" {
-    local fake_bin
+    local fake_bin bash_bin
     fake_bin="$(mktemp -d)"
-    for cmd in git mdbook; do
-        printf '#!/bin/sh\nexit 0\n' > "$fake_bin/$cmd"
-        chmod +x "$fake_bin/$cmd"
-    done
-    # no yq
+    bash_bin="$(command -v bash)"
+    printf '#!/bin/sh\nexit 0\n' > "$fake_bin/git"
+    printf '#!/bin/sh\nexit 0\n' > "$fake_bin/mdbook"
+    chmod +x "$fake_bin/git" "$fake_bin/mdbook"
 
-    run env PATH="$fake_bin:/usr/bin:/bin" bash "$INIT_SCRIPT" -t T -a A -r http://x
+    run env -i PATH="$fake_bin" HOME="$HOME" "$bash_bin" "$INIT_SCRIPT" -t T -a A -r http://x
     [ "$status" -ne 0 ]
     [[ "$output" == *"yq is not installed"* ]]
 
