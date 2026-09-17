@@ -1,45 +1,39 @@
-# Absolute path to init.sh — resolved at parse time, before setup() changes $PWD
+# Resolved at parse time so they remain valid after setup() changes $PWD
 INIT_SCRIPT="$(cd "$BATS_TEST_DIRNAME" && pwd)/../../scripts/src/init.sh"
+REPO_ROOT="$(cd "$BATS_TEST_DIRNAME" && pwd)/../.."
 
 # ---------------------------------------------------------------------------
-# Helper: build a minimal fake "template repo" that mirrors what init.sh
-# expects to find in $PWD when it runs.
+# Helper: build a fake "template repo" by copying real files from the repo.
+# This keeps the fake repo in sync automatically — adding a file to
+# .child-github/ or src/theme/ is immediately reflected here without any
+# manual update to this helper.
 # ---------------------------------------------------------------------------
 _setup_fake_repo() {
     local dir="$1"
 
-    # src/theme — init.sh does: cp -r ./src/theme ./ then rm -rf ./src
-    mkdir -p "$dir/src/theme"
-    echo "<html></html>" > "$dir/src/theme/head.hbs"
+    # Copy the real src/theme so init.sh can: cp -r ./src/theme ./ then rm -rf ./src
+    mkdir -p "$dir/src"
+    cp -r "$REPO_ROOT/src/theme" "$dir/src/"
 
-    # book.toml placeholder (init.sh deletes it)
-    cat > "$dir/book.toml" <<'EOF'
-[book]
-title = "Placeholder"
-EOF
+    # Copy the real cspell.config.yml so yq patches the actual schema
+    cp "$REPO_ROOT/cspell.config.yml" "$dir/cspell.config.yml"
 
-    # cspell.config.yml that yq will patch
-    cat > "$dir/cspell.config.yml" <<'EOF'
-version: "0.2"
-words:
-  - someword
-EOF
+    # book.toml placeholder (init.sh deletes and recreates it)
+    cp "$REPO_ROOT/book.toml" "$dir/book.toml"
 
-    # .github — init.sh removes specific files and replaces templates
+    # Copy the real .child-github/ — any new files added there are picked up automatically
+    cp -r "$REPO_ROOT/.child-github" "$dir/.child-github"
+
+    # .github — mirror the files init.sh is expected to remove/replace
     mkdir -p "$dir/.github/ISSUE_TEMPLATE"
     mkdir -p "$dir/.github/workflows"
-    echo "old pr template"   > "$dir/.github/PULL_REQUEST_TEMPLATE.md"
+    cp "$REPO_ROOT/.github/PULL_REQUEST_TEMPLATE.md" "$dir/.github/PULL_REQUEST_TEMPLATE.md"
     touch "$dir/.github/dependabot.yml"
     touch "$dir/.github/workflows/lint_pr.yml"
 
-    # .child-github — init.sh copies these into .github
-    mkdir -p "$dir/.child-github/ISSUE_TEMPLATE"
-    echo "child pr template" > "$dir/.child-github/PULL_REQUEST_TEMPLATE.md"
-    echo "child issue cfg"   > "$dir/.child-github/ISSUE_TEMPLATE/config.yml"
-
     # Files init.sh removes
-    echo "license text"      > "$dir/LICENSE"
-    echo "contributing text" > "$dir/CONTRIBUTING.md"
+    cp "$REPO_ROOT/LICENSE"        "$dir/LICENSE"
+    cp "$REPO_ROOT/CONTRIBUTING.md" "$dir/CONTRIBUTING.md"
 }
 
 # ---------------------------------------------------------------------------
@@ -256,19 +250,26 @@ teardown() {
     env PATH="$fake_bin:$PATH" bash "$INIT_SCRIPT" -t T -a A -r http://x
 
     [ -f ".github/PULL_REQUEST_TEMPLATE.md" ]
-    grep -q "child pr template" .github/PULL_REQUEST_TEMPLATE.md
+    # Content must match the real .child-github template, not the parent one
+    diff -q "$REPO_ROOT/.child-github/PULL_REQUEST_TEMPLATE.md" ".github/PULL_REQUEST_TEMPLATE.md" > /dev/null
 
     rm -rf "$fake_bin"
 }
 
-@test "child ISSUE_TEMPLATE is copied into .github" {
+@test "all child ISSUE_TEMPLATE files are copied into .github" {
     local fake_bin
     fake_bin="$(mktemp -d)"
     _make_stub_bin "$fake_bin"
 
     env PATH="$fake_bin:$PATH" bash "$INIT_SCRIPT" -t T -a A -r http://x
 
-    [ -f ".github/ISSUE_TEMPLATE/config.yml" ]
+    # Every file present in the real .child-github/ISSUE_TEMPLATE must exist
+    # in .github/ISSUE_TEMPLATE after init. Adding a new file to .child-github
+    # automatically extends this assertion.
+    while IFS= read -r -d '' src_file; do
+        local rel="${src_file#$REPO_ROOT/.child-github/ISSUE_TEMPLATE/}"
+        [ -f ".github/ISSUE_TEMPLATE/$rel" ]
+    done < <(find "$REPO_ROOT/.child-github/ISSUE_TEMPLATE" -type f -print0)
 
     rm -rf "$fake_bin"
 }
