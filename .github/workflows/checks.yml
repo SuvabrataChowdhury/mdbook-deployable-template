@@ -8,12 +8,13 @@ on:
       - opened
       - synchronize
       - reopened
+      - ready_for_review
 
-# TODO: Add script specific check in a seperate parallel job
 jobs:
   md-checks:
     name: Markdown Checks
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     permissions:
       pull-requests: write
       contents: read
@@ -21,8 +22,6 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
       - name: Check Spellings
         uses: streetsidesoftware/cspell-action@v9
         with:
@@ -43,3 +42,14 @@ jobs:
         with:
           check-modified-files-only: yes
           base-branch: main
+  script-tests:
+    name: Script Tests
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Test Init Script
+        run: scripts/test/bats/bin/bats scripts/test/init-unit-test.bats

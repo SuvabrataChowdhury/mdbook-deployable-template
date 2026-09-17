@@ -1,64 +1,73 @@
 # Setup
-To start writing and deploying your book‑site, you only need a few configurations. If you can create a GitHub repository, you're good to go.
+To start writing and deploying your book‑site, follow the steps below.
 
-## Repository setup
-1. Create a new repository from [this template](https://github.com/SuvabrataChowdhury/mdbook-deployable-template).
-    - **Helpful doc**: [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
-2. Enable GitHub Pages for the new repository.
-    - In your new repo, go to **Settings → Pages**.
-    - Set the **publishing source** to **GitHub Actions** (you don't need to touch branches like gh‑pages yourself).
-    - **Helpful doc**: [Publishing with a custom GitHub Actions workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
-3. Optionally, edit the repository description to always have quick access to the deployed page's URL.
-    - In your new repo, go to **About → Settings → Tick `Use your GitHub Pages website` → `Save Changes`**
+## Prerequisites
+Install the following tools on your machine — you will need them for local preview regardless of which initialization path you choose.
 
-![URL-in-description](image.png)
+- [mdbook](https://rust-lang.github.io/mdBook/guide/installation.html) — on most systems this is a single command via cargo or a package manager.
+- [git](https://git-scm.com/install/)
+
+## Step 1 — Create your repository
+Create a new repository from [this template](https://github.com/SuvabrataChowdhury/mdbook-deployable-template).
+- Click **"Use this template" → "Create a new repository"** at the top of the template repository page.
+- **Helpful doc**: [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+
+## Step 2 — Enable GitHub Pages
+- In your new repo, go to **Settings → Pages**.
+- Under *Build and deployment → Source*, select **GitHub Actions**.
+- **Helpful doc**: [Publishing with a custom GitHub Actions workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
 
 > Once Pages is enabled, the deploy workflow runs automatically on every push to `main`.
 
-## Local environment setup
-Regardless of how you initialize your book, you will need the following on your machine.
+Optionally, edit the repository description so you always have quick access to the deployed page's URL:
+- Go to **About → Settings → Tick `Use your GitHub Pages website` → Save Changes**
 
-1. Install the [mdbook](https://rust-lang.github.io/mdBook/guide/installation.html) CLI.
-    - On most systems this is just a single command (e.g., via cargo or a platform‑specific package manager).
-2. Ensure git is installed. If not, follow this [Installation guide](https://git-scm.com/install/).
-3. Clone the repository you created in the [Repository setup](#repository-setup) step:
+![URL-in-description](image.png)
+
+## Step 3 — Allow Actions to create pull requests
+The init workflow opens a pull request on your behalf. GitHub requires this permission to be enabled explicitly.
+- Go to **Settings → Actions → General**.
+- Scroll to *Workflow permissions*, tick **"Allow GitHub Actions to create and approve pull requests"**, and click **Save**.
+
+## Step 4 — Initialize your book
+Choose one of the two paths below. The GitHub Actions path is recommended — it requires no local tooling and works on all platforms including Windows.
+
+### Via GitHub Actions (Recommended)
+1. Go to **Actions → Init Repository → Run workflow**.
+2. Enter your book title and author name, then click **Run workflow**.
+3. Wait ~1 minute for a pull request to appear, review it, and **merge it**.
+4. Pull the latest changes locally:
+    ```bash
+    git pull
+    ```
+
+### Via init.sh
+> **Windows users**: use the [GitHub Actions path](#via-github-actions-recommended) instead, or run the script inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+1. Install [yq](https://mikefarah.gitbook.io/yq#install) — required by the init script, one-time only.
+2. Clone your repository:
     ```bash
     git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
     cd YOUR-REPO
     ```
-
-## Initialize your book
-The initialization step sets up your book's title, author, and structure. You can do this either via GitHub Actions or by running the script locally.
-
-### Via GitHub Actions (Recommended)
-No local tooling required for this step — works on all platforms including Windows.
-
-1. Enable GitHub Actions to create and approve pull requests.
-    - Go to **Settings → Actions → General → Tick `Allow GitHub Actions to create and approve pull requests` → `Save`**
-2. Go to **Actions → Init Repository → Run Workflow**, enter your book title and author name, then click **Run Workflow**.
-    - A pull request will open once the workflow completes with all the changes needed to initialize your repository.
-    - Review and merge the pull request.
-    - Pull the latest changes locally and you are all set.
-
-### Via init.sh
-> **Windows users**: The `init.sh` script requires a Unix shell. Use the [GitHub Actions approach](#via-github-actions-recommended) above instead, or run the script inside [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
-
-1. Install [yq](https://mikefarah.gitbook.io/yq#install), required by the init script. This is a one-time dependency — you won't need it after initialization.
-2. Switch to a new branch before making changes:
+3. Switch to a new branch:
     ```bash
     git checkout -b init
     ```
-    See [Git feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) for good practices.
-3. Run the `init.sh` script:
+4. Run the init script:
     ```bash
     chmod +x init.sh
     ./init.sh
     ```
-4. Push the setup changes to your repo:
+5. Push the changes and open a pull request against `main`:
     ```bash
     git add .
     git commit -m "init"
-    git push
+    git push --set-upstream origin init
     ```
-    - If this is the first push, Git may report that the upstream branch is not set. The error message will include the command to set it (e.g., `git push --set-upstream origin init`).
-    - If you used a branch other than `main` (for example, `init`), open a pull request against `main` for the setup changes to take effect.
+
+## Step 5 — Start writing
+- Edit Markdown files in `src/`.
+- Update `src/SUMMARY.md` to add or remove chapters.
+- Preview locally with `mdbook serve` — the page live‑reloads as you edit.
+- Push to `main` — your site deploys automatically and will be live at `https://<your-username>.github.io/<your-repo>/` within a couple of minutes.
