@@ -151,10 +151,10 @@ rm -rf .github/ISSUE_TEMPLATE/*
 rm -f .github/PULL_REQUEST_TEMPLATE.md
 rm -f .github/dependabot.yml	# TODO: check if removing dependabot is a good idea for child repo
 rm -f .github/workflows/lint_pr.yml # as child repo does not need these checks
-yq -i 'del(.jobs.script-tests)' .github/workflows/checks.yml # child repo does not need to run template script tests
 
 cp -r .child-github/ISSUE_TEMPLATE .github/
 cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
+cp -r .child-github/workflows .github/
 
 # Remove LICENSE and CONTRIBUTING.md in child repo as author should add them manually if needed.
 rm LICENSE
