@@ -25,38 +25,36 @@ Use this template to create and publish blog-style websites, technical documenta
 
 ## 🚀 Quick Start
 
-### Get up and running in 3 steps:
+> No local tooling needed. Everything runs in your browser.
 
-1. **Use this template** — Click **"Use this template"** button at the top of this repository
-2. **Enable GitHub Pages** — Go to Settings → Pages → Set source to "GitHub Actions"
-3. **Start writing** — Edit files in `src/` and push to GitHub
+**Step 1 — Create your repository**
+- Click **"Use this template" → "Create a new repository"** at the top of this page.
 
-✅ Your site will be live in 1-2 minutes!
+**Step 2 — Enable GitHub Pages**
+- In your new repo go to **Settings → Pages**.
+- Under *Build and deployment → Source*, select **GitHub Actions**.
+
+**Step 3 — Allow Actions to create pull requests**
+- Go to **Settings → Actions → General**.
+- Scroll to *Workflow permissions*, tick **"Allow GitHub Actions to create and approve pull requests"**, and click **Save**.
+
+**Step 4 — Initialize your book**
+- Go to **Actions → Init Repository → Run workflow**.
+- Enter your book title and author name, then click **Run workflow**.
+- Wait ~1 minute for a pull request to appear, then **merge it**.
+
+**Step 5 — Start writing**
+- Pull the latest changes locally (`git pull`).
+- Edit Markdown files in `src/` and push to `main`.
+- Your site deploys automatically — it will be live at `https://<your-username>.github.io/<your-repo>/` within a couple of minutes.
+
+> Stuck? The [full setup guide](https://suvabratachowdhury.github.io/mdbook-deployable-template/setup/) has screenshots for every step.
 
 ---
 
 ## 📖 Full Documentation
 
-**For detailed step-by-step instructions, visit the deployed site:**
-
-### 🌐 **[mdbook-deployable-template Documentation](https://suvabratachowdhury.github.io/mdbook-deployable-template/)**
-
-The documentation includes:
-- **[Setup Guide](https://suvabratachowdhury.github.io/mdbook-deployable-template/setup/)** — Complete setup instructions with all the details
-- **[Deployment Flow](https://suvabratachowdhury.github.io/mdbook-deployable-template/deployment-flow/)** — How automatic deployment works and manual deployment options
-
----
-
-## 📚 What You'll Learn
-
-On the documentation website, you'll find:
-- ✅ How to create your repository from this template
-- ✅ How to enable GitHub Pages in your repository
-- ✅ How to install and use mdbook locally
-- ✅ How to preview your site before publishing
-- ✅ How to structure your content
-- ✅ How to deploy manually if needed
-- ✅ Markdown formatting examples
+**[mdbook-deployable-template Documentation](https://suvabratachowdhury.github.io/mdbook-deployable-template/)**
 
 ---
 
@@ -75,7 +73,7 @@ Create Markdown files in `src/` and link them in `src/SUMMARY.md`.
 Yes! Collaborate using Git branches and pull requests.
 
 **Q: What if I have questions?**
-Check the [full documentation](https://suvabratachowdhury.github.io/mdbook-deployable-template/) first, or [start a discussion](https://github.com/SuvabrataChowdhury/mdbook-deployable-template/discussions).
+[Start a discussion](https://github.com/SuvabrataChowdhury/mdbook-deployable-template/discussions) or check the [full documentation](https://suvabratachowdhury.github.io/mdbook-deployable-template/).
 
 ---
 
