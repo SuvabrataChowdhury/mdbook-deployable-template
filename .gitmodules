@@ -1,9 +1,9 @@
-[submodule "test/bats"]
-	path = test/bats
+[submodule "scripts/test/bats"]
+	path = scripts/test/bats
 	url = https://github.com/bats-core/bats-core.git
-[submodule "test/test_helper/bats-support"]
-	path = test/test_helper/bats-support
-	url = https://github.com/bats-core/bats-support.git
-[submodule "test/test_helper/bats-assert"]
-	path = test/test_helper/bats-assert
+[submodule "scripts/test/test_helper/bats-assert"]
+	path = scripts/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
+[submodule "scripts/test/test_helper/bats-support"]
+	path = scripts/test/test_helper/bats-support
+	url = https://github.com/bats-core/bats-support.git
