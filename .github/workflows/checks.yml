@@ -8,11 +8,13 @@ on:
       - opened
       - synchronize
       - reopened
+      - ready_for_review
 
 jobs:
   md-checks:
     name: Markdown Checks
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     permissions:
       pull-requests: write
       contents: read
@@ -43,6 +45,7 @@ jobs:
   script-tests:
     name: Script Tests
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v7
