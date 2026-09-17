@@ -33,8 +33,8 @@ _setup_fake_repo() {
     cp "$REPO_ROOT/.github/workflows/checks.yml" "$dir/.github/workflows/checks.yml"
 
     # Files init.sh removes
-    cp "$REPO_ROOT/LICENSE"        "$dir/LICENSE"
-    cp "$REPO_ROOT/CONTRIBUTING.md" "$dir/CONTRIBUTING.md"
+    cp "$REPO_ROOT/LICENSE" "$dir/LICENSE" 2>/dev/null || true
+    cp "$REPO_ROOT/CONTRIBUTING.md" "$dir/CONTRIBUTING.md" 2>/dev/null || true
 }
 
 # ---------------------------------------------------------------------------
