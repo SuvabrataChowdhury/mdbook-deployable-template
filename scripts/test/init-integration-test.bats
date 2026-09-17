@@ -142,3 +142,12 @@ _run_init() {
     [ -f ".github/actions/install-mdbook/action.yml" ]
     [ -f ".github/actions/install-yq/action.yml" ]
 }
+
+@test "script-tests job is removed from checks.yml after init" {
+    _run_init "CI Test" "Jane Doe" "https://github.com/jane/ci-test"
+
+    [ -f ".github/workflows/checks.yml" ]
+    run yq '.jobs | has("script-tests")' .github/workflows/checks.yml
+    [ "$status" -eq 0 ]
+    [ "$output" = "false" ]
+}

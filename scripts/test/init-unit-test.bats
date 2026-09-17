@@ -30,6 +30,7 @@ _setup_fake_repo() {
     cp "$REPO_ROOT/.github/PULL_REQUEST_TEMPLATE.md" "$dir/.github/PULL_REQUEST_TEMPLATE.md"
     touch "$dir/.github/dependabot.yml"
     touch "$dir/.github/workflows/lint_pr.yml"
+    cp "$REPO_ROOT/.github/workflows/checks.yml" "$dir/.github/workflows/checks.yml"
 
     # Files init.sh removes
     cp "$REPO_ROOT/LICENSE"        "$dir/LICENSE"
