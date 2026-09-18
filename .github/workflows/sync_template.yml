@@ -1,0 +1,20 @@
+on:
+  schedule:
+  - cron: "0 0 * * 0" # https://crontab.guru/#0_0_*_*_0
+  
+  workflow_dispatch:
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: actions-template-sync
+        uses: AndreasAugustin/actions-template-sync@v2
+        with:
+          source_repo_path: SuvabrataChowdhury/mdbook-deployable-template
+          is_sync_to_latest_semver: true
