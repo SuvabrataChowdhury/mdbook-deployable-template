@@ -134,6 +134,7 @@ _run_init() {
 @test "template-only workflows are removed after init" {
     _run_init "CI Test" "Jane Doe" "https://github.com/jane/ci-test"
     [ ! -f ".github/workflows/lint_pr.yml" ]
+    [ ! -f ".github/workflows/release.yml" ]
 }
 
 @test "composite actions are present for child repo workflows" {
