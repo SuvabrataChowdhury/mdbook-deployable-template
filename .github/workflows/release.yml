@@ -1,9 +1,19 @@
 name: Create Release
 
 on:
-  push:
+  # Commenting out for testing
+  # push:
+  #   branches:
+  #     - main # Triggers when a PR is merged into main
+
+  # TODO: Adding for testing purpose
+  pull_request:
     branches:
-      - main # Triggers when a PR is merged into main
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   test:
@@ -39,7 +49,7 @@ jobs:
 
       - name: Calculate Next Version
         id: semver
-        uses: PaulHatch/git-semantic-version@v5.4.0
+        uses: PaulHatch/semantic-version@v5.4.0
         with:
           tag_prefix: "v"
           major_pattern: "/^(feat|fix)\\(.+\\)!:/"
@@ -56,7 +66,9 @@ jobs:
             Automated release for version ${{ steps.semver.outputs.version }}
 
             Changes since last release: Includes commit increments.
-          draft: false
+          # draft: false
+          draft: true # for testing
           prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
