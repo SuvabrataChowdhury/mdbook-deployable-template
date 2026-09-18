@@ -1,19 +1,9 @@
 name: Create Release
 
 on:
-  # Commenting out for testing
-  # push:
-  #   branches:
-  #     - main # Triggers when a PR is merged into main
-
-  # TODO: Adding for testing purpose
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - opened
-      - synchronize
-      - reopened
 
 jobs:
   test:
@@ -66,8 +56,7 @@ jobs:
             Automated release for version ${{ steps.semver.outputs.version }}
 
             Changes since last release: Includes commit increments.
-          # draft: false
-          draft: true # for testing
+          draft: false
           prerelease: false
           generate_release_notes: true
         env:
