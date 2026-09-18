@@ -48,6 +48,7 @@ jobs:
           version_format: "v${major}.${minor}.${patch}"
 
       - name: Create GitHub Release
+        if: steps.semver.outputs.version_type == 'None'
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.semver.outputs.version }}
