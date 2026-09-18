@@ -41,10 +41,10 @@ jobs:
         id: semver
         uses: PaulHatch/git-semantic-version@v5.4.0
         with:
-          tag_prefix: "v" 
-          major_pattern: "/^(feat|fix|refactor)!:|BREAKING CHANGE:/"
-          minor_pattern:  "/^feat(\\(.+\\))?:/"
-          ignore_commits_pattern: "/^chore:.*/"
+          tag_prefix: "v"
+          major_pattern: "/^(feat|fix)\\(.+\\)!:/"
+          minor_pattern: "/^feat\\(.+\\):/"
+          ignore_commits_pattern: "/^chore\\(.+\\):/"
           version_format: "v${major}.${minor}.${patch}"
 
       - name: Create GitHub Release
@@ -54,7 +54,7 @@ jobs:
           name: Release ${{ steps.semver.outputs.version }}
           body: |
             Automated release for version ${{ steps.semver.outputs.version }}
-            
+
             Changes since last release: Includes commit increments.
           draft: false
           prerelease: false
