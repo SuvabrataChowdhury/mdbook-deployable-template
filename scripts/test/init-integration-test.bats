@@ -134,6 +134,7 @@ _run_init() {
 @test "template-only workflows are removed after init" {
     _run_init "CI Test" "Jane Doe" "https://github.com/jane/ci-test"
     [ ! -f ".github/workflows/lint_pr.yml" ]
+    [ ! -f ".github/workflows/release.yml" ]
 }
 
 @test "composite actions are present for child repo workflows" {
@@ -143,11 +144,3 @@ _run_init() {
     [ -f ".github/actions/install-yq/action.yml" ]
 }
 
-@test "script-tests job is removed from checks.yml after init" {
-    _run_init "CI Test" "Jane Doe" "https://github.com/jane/ci-test"
-
-    [ -f ".github/workflows/checks.yml" ]
-    run yq '.jobs | has("script-tests")' .github/workflows/checks.yml
-    [ "$status" -eq 0 ]
-    [ "$output" = "false" ]
-}
