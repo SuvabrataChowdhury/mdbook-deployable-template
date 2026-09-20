@@ -2,7 +2,8 @@ FROM alpine/git:latest AS cloning-stage
 WORKDIR /template
 RUN git clone --branch main --single-branch https://github.com/SuvabrataChowdhury/mdbook-deployable-template.git && \
     cd mdbook-deployable-template && \
-    git checkout $(git describe --tags --abbrev=0)
+    git checkout $(git describe --tags --abbrev=0) && \
+	rm -rf .git
 
 FROM peaceiris/mdbook:latest AS mdbook-binary
 

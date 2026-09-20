@@ -5,8 +5,6 @@
 
 set -euo pipefail  # Exit on any error
 
-# source "$(dirname "$0")/setup.sh"
-
 usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
@@ -81,6 +79,10 @@ docker build -t mdbook-build -f Dockerfile.setup \
     --build-arg BOOK_TITLE="$BOOK_TITLE" \
     --build-arg AUTHOR_NAME="$AUTHOR_NAME" \
     --build-arg REPO_URL="$REPO_URL" .
+
+# After copying files from container the resultant files are nothing but union of the local machine and the container's files.
+# Removing files that are not supposed to be in the child repo
+rm -rf .github src LICENSE CONTRIBUTING.md
 
 CONTAINER_ID=$(docker create mdbook-build)
 docker cp "$CONTAINER_ID":/template/mdbook-deployable-template/. .
