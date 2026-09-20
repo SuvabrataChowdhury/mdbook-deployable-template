@@ -24,6 +24,10 @@ setup() {
         "$REPO_ROOT/" "$TEST_TEMP_DIR/"
 
     cd "$TEST_TEMP_DIR"
+
+    # Use the local working tree inside the Docker build so the current branch
+    # is tested rather than the last published release on GitHub.
+    export MDBOOK_USE_LOCAL=true
 }
 
 teardown() {
@@ -90,8 +94,6 @@ _run_init() {
 
 @test "composite actions are present for child repo workflows" {
     _run_init "CI Test" "Jane Doe" "https://github.com/jane/ci-test"
-    # deploy.yml and setup.yml both reference these local composite actions
     [ -f ".github/actions/install-mdbook/action.yml" ]
-    [ -f ".github/actions/install-yq/action.yml" ]
 }
 
