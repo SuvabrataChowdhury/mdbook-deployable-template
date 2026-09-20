@@ -68,7 +68,74 @@ STUB
         printf '#!/bin/sh\nexit 0\n' > "$bin_dir/yq"
     fi
 
-    chmod +x "$bin_dir/git" "$bin_dir/mdbook" "$bin_dir/yq"
+    # docker stub: replaces `docker build/create/cp/rm` so unit tests never
+    # require a real Docker daemon or Dockerfile.setup.
+    #
+    # docker build  — captures --build-arg values into a state file, exits 0.
+    # docker create — emits a deterministic fake container ID.
+    # docker cp     — runs setup.sh locally using the captured build-args,
+    #                 which produces the same file tree the real container would.
+    # docker rm     — no-op.
+    local setup_script="$REPO_ROOT/scripts/src/setup.sh"
+    cat > "$bin_dir/docker" <<STUB
+#!/bin/sh
+# All docker sub-commands share a state file keyed on the parent PID (init.sh),
+# so docker build can pass build-args to docker cp within the same script run.
+STATE_FILE="\${TMPDIR:-/tmp}/.docker_stub_state_\$PPID"
+SUBCOMMAND="\$1"
+shift
+
+case "\$SUBCOMMAND" in
+    build)
+        # Parse --build-arg KEY=VALUE pairs and persist them for docker cp.
+        title=""; author=""; repo_url=""
+        while [ \$# -gt 0 ]; do
+            if [ "\$1" = "--build-arg" ]; then
+                arg="\$2"; shift 2
+                case "\$arg" in
+                    BOOK_TITLE=*)   title="\${arg#BOOK_TITLE=}" ;;
+                    AUTHOR_NAME=*)  author="\${arg#AUTHOR_NAME=}" ;;
+                    REPO_URL=*)     repo_url="\${arg#REPO_URL=}" ;;
+                esac
+            else
+                shift
+            fi
+        done
+        printf '%s\n%s\n%s\n' "\$title" "\$author" "\$repo_url" > "\$STATE_FILE"
+        exit 0
+        ;;
+    create)
+        echo "stub-container-id"
+        exit 0
+        ;;
+    cp)
+        # \$1 is <container_id>:/template/mdbook-deployable-template/. — ignore it.
+        # \$2 is the destination (always ".").
+        # Run setup.sh locally to produce the same file tree the container would.
+        #
+        # init.sh calls `rm -rf .github src` before docker cp, but setup.sh
+        # expects both to exist (src/theme for cp, .github/ for cp into).
+        # Restore them from REPO_ROOT to mirror what the real container has.
+        mkdir -p src
+        cp -r "$REPO_ROOT/src/theme" src/
+        mkdir -p .github/ISSUE_TEMPLATE .github/workflows
+        cp -r "$REPO_ROOT/.child-github" ./
+        title=\$(sed -n '1p' "\$STATE_FILE")
+        author=\$(sed -n '2p' "\$STATE_FILE")
+        repo_url=\$(sed -n '3p' "\$STATE_FILE")
+        bash "$setup_script" "\$title" "\$author" "\$repo_url"
+        exit \$?
+        ;;
+    rm)
+        exit 0
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+STUB
+
+    chmod +x "$bin_dir/git" "$bin_dir/mdbook" "$bin_dir/yq" "$bin_dir/docker"
 }
 
 # ---------------------------------------------------------------------------
@@ -119,7 +186,7 @@ teardown() {
     rm -rf "$fake_bin"
 }
 
-@test "exits 1 when mdbook is not installed" {
+@test "exits 1 when docker is not installed" {
     local fake_bin bash_bin
     fake_bin="$(mktemp -d)"
     bash_bin="$(command -v bash)"
@@ -128,22 +195,7 @@ teardown() {
 
     run env -i PATH="$fake_bin" HOME="$HOME" "$bash_bin" "$INIT_SCRIPT" -t T -a A -r http://x
     [ "$status" -ne 0 ]
-    [[ "$output" == *"mdbook is not installed"* ]]
-
-    rm -rf "$fake_bin"
-}
-
-@test "exits 1 when yq is not installed" {
-    local fake_bin bash_bin
-    fake_bin="$(mktemp -d)"
-    bash_bin="$(command -v bash)"
-    printf '#!/bin/sh\nexit 0\n' > "$fake_bin/git"
-    printf '#!/bin/sh\nexit 0\n' > "$fake_bin/mdbook"
-    chmod +x "$fake_bin/git" "$fake_bin/mdbook"
-
-    run env -i PATH="$fake_bin" HOME="$HOME" "$bash_bin" "$INIT_SCRIPT" -t T -a A -r http://x
-    [ "$status" -ne 0 ]
-    [[ "$output" == *"yq is not installed"* ]]
+    [[ "$output" == *"Docker is not installed"* ]]
 
     rm -rf "$fake_bin"
 }
