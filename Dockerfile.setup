@@ -1,0 +1,22 @@
+FROM alpine/git:latest AS cloning-stage
+WORKDIR /template
+RUN git clone --branch main --single-branch https://github.com/SuvabrataChowdhury/mdbook-deployable-template.git && \
+    cd mdbook-deployable-template && \
+    git checkout $(git describe --tags --abbrev=0) && \
+	rm -rf .git
+
+FROM peaceiris/mdbook:latest AS mdbook-binary
+
+FROM mikefarah/yq:latest AS yq-binary
+
+FROM alpine:latest AS setup-builder
+ARG BOOK_TITLE
+ARG AUTHOR_NAME
+ARG REPO_URL
+RUN apk add --no-cache bash
+COPY --from=mdbook-binary /usr/bin/mdbook /usr/local/bin/mdbook
+COPY --from=yq-binary /usr/bin/yq /usr/local/bin/yq
+COPY --from=cloning-stage /template/mdbook-deployable-template /template/mdbook-deployable-template
+RUN cd /template/mdbook-deployable-template && \
+    ./scripts/src/setup.sh "$BOOK_TITLE" "$AUTHOR_NAME" "$REPO_URL"
+
