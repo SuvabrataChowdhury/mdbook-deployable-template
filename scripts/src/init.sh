@@ -56,26 +56,6 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if mdbook is installed
-# if ! command -v mdbook &> /dev/null; then
-#     echo "⚠️  mdbook is not installed."
-#     echo ""
-#     echo "Install mdbook from: https://rust-lang.github.io/mdBook/guide/installation.html"
-#     echo ""
-#     exit 1
-# fi
-#
-# if ! command -v yq &> /dev/null; then
-#     echo "⚠️  yq is not installed."
-#     echo ""
-#     echo "Install yq from: https://mikefarah.gitbook.io/yq"
-#     echo ""
-#     exit 1
-# fi
-
-# echo "✅ mdbook is installed"
-# echo ""
-
 # Collect user information (prompt only for values not provided as arguments)
 echo "📋 Project Configuration"
 echo "========================"
@@ -97,12 +77,14 @@ else
     [[ -z "$REPO_URL" ]] && { echo "❌ Repository URL is required."; exit 1; }
 fi
 
-# setup "$BOOK_TITLE" "$AUTHOR_NAME" "$REPO_URL"
-
 docker build -t mdbook-build -f Dockerfile.setup \
     --build-arg BOOK_TITLE="$BOOK_TITLE" \
     --build-arg AUTHOR_NAME="$AUTHOR_NAME" \
     --build-arg REPO_URL="$REPO_URL" .
+
+CONTAINER_ID=$(docker create mdbook-build)
+docker cp "$CONTAINER_ID":/template/mdbook-deployable-template/. .
+docker rm "$CONTAINER_ID"
 
 echo ""
 echo "========================================="

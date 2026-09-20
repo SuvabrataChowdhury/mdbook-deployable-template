@@ -79,6 +79,10 @@ EOF
 	rm -f LICENSE
 	rm -f CONTRIBUTING.md
 
+	# Remove init.sh so that script does not changes itself
+	rm -f init.sh
+	rm -f ./scripts/src/init.sh
+
 	# Test if mdbook can build
 	if mdbook build --dry-run > /dev/null 2>&1; then
 		echo "✅ mdbook build test passed"
@@ -86,7 +90,6 @@ EOF
 		echo "⚠️  mdbook build encountered an issue"
 		echo "   Try running: mdbook serve"
 	fi
-
 }
 
 # Only call setup when executed directly, not when sourced
