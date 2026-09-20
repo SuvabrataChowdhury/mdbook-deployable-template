@@ -5,7 +5,7 @@
 
 set -euo pipefail  # Exit on any error
 
-source "$(dirname "$0")/setup.sh"
+# source "$(dirname "$0")/setup.sh"
 
 usage() {
     echo "Usage: $0 [OPTIONS]"

@@ -89,3 +89,8 @@ EOF
 
 }
 
+# Only call setup when executed directly, not when sourced
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    setup "$@"
+fi
+
