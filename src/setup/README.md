@@ -2,10 +2,11 @@
 To start writing and deploying your book‑site, follow the steps below.
 
 ## Prerequisites
-Install the following tools on your machine — you will need them for local preview regardless of which initialization path you choose.
+- [git](https://git-scm.com/install/) — required regardless of which initialization path you choose.
+- [Docker](https://www.docker.com/products/docker-desktop/) — only needed for the local `init.sh` path.
+- [mdbook](https://rust-lang.github.io/mdBook/guide/installation.html) — only needed if you want to preview your book locally before pushing.
 
-- [mdbook](https://rust-lang.github.io/mdBook/guide/installation.html) — on most systems this is a single command via cargo or a package manager.
-- [git](https://git-scm.com/install/)
+> **Note:** Docker is being adopted progressively across this template's tooling. The goal is that Git and Docker are the only prerequisites — no other binaries or language runtimes needed. In future updates, local preview and other workflows will also run inside Docker.
 
 ## Step 1 — Create your repository
 Create a new repository from [this template](https://github.com/SuvabrataChowdhury/mdbook-deployable-template).
@@ -33,6 +34,8 @@ The init workflow opens a pull request on your behalf. GitHub requires this perm
 Choose one of the two paths below. The GitHub Actions path is recommended — it requires no local tooling and works on all platforms including Windows.
 
 ### Via GitHub Actions (Recommended)
+No tools needed on your machine.
+
 1. Go to **Actions → Init Repository → Run workflow**.
 2. Enter your book title and author name, then click **Run workflow**.
 3. Wait ~1 minute for a pull request to appear, review it, and **merge it**.
@@ -42,24 +45,26 @@ Choose one of the two paths below. The GitHub Actions path is recommended — it
     ```
 
 ### Via init.sh
+This path runs the same setup locally inside Docker. You need [Git](https://git-scm.com/install/) and [Docker](https://www.docker.com/products/docker-desktop/) installed.
+
 > **Windows users**: use the [GitHub Actions path](#via-github-actions-recommended) instead, or run the script inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-1. Install [yq](https://mikefarah.gitbook.io/yq#install) — required by the init script, one-time only.
-2. Clone your repository:
+1. Clone your repository:
     ```bash
     git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
     cd YOUR-REPO
     ```
-3. Switch to a new branch:
+2. Switch to a new branch:
     ```bash
     git checkout -b init
     ```
-4. Run the init script:
+3. Run the init script:
     ```bash
     chmod +x init.sh
     ./init.sh
     ```
-5. Push the changes and open a pull request against `main`:
+    The script will prompt for your book title, author name, and repository URL (or pass them as flags — run `./init.sh --help` for details).
+4. Push the changes and open a pull request against `main`:
     ```bash
     git add .
     git commit -m "init"
