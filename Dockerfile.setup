@@ -8,10 +8,6 @@ FROM peaceiris/mdbook:latest AS mdbook-binary
 
 FROM mikefarah/yq:latest AS yq-binary
 
-ARG BOOK_TITLE="My Book"
-ARG AUTHOR_NAME="Author"
-ARG REPO_URL="https://github.com/example/my-book"
-
 FROM alpine:latest AS setup-builder
 ARG BOOK_TITLE
 ARG AUTHOR_NAME
@@ -21,7 +17,7 @@ COPY --from=mdbook-binary /usr/bin/mdbook /usr/local/bin/mdbook
 COPY --from=yq-binary /usr/bin/yq /usr/local/bin/yq
 COPY --from=cloning-stage /template/mdbook-deployable-template /template/mdbook-deployable-template
 # TODO: remove it as it's for testing purpose
-COPY ./init.sh /template/mdbook-deployable-template/scripts/src/init.sh
+COPY ./scripts/src/setup.sh /template/mdbook-deployable-template/scripts/src/setup.sh
 RUN cd /template/mdbook-deployable-template && \
-    ./init.sh --title "$BOOK_TITLE" --author "$AUTHOR_NAME" --repo "$REPO_URL"
+    ./scripts/src/setup.sh "$BOOK_TITLE" "$AUTHOR_NAME" "$REPO_URL"
 
