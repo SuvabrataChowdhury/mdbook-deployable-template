@@ -17,8 +17,6 @@ RUN apk add --no-cache bash
 COPY --from=mdbook-binary /usr/bin/mdbook /usr/local/bin/mdbook
 COPY --from=yq-binary /usr/bin/yq /usr/local/bin/yq
 COPY --from=cloning-stage /template/mdbook-deployable-template /template/mdbook-deployable-template
-# TODO: remove it as it's for testing purpose
-COPY ./scripts/src/setup.sh /template/mdbook-deployable-template/scripts/src/setup.sh
 RUN cd /template/mdbook-deployable-template && \
     ./scripts/src/setup.sh "$BOOK_TITLE" "$AUTHOR_NAME" "$REPO_URL"
 
