@@ -40,12 +40,12 @@ echo "🚀 Initializing your mdbook project..."
 echo ""
 
 # Check if Git is installed
-if ! command -v git &> /dev/null; then
-    echo "❌ Git is not installed. Please install Git first."
-    echo ""
-    echo "   Visit: https://git-scm.com/install"
-    exit 1
-fi
+# if ! command -v git &> /dev/null; then
+#     echo "❌ Git is not installed. Please install Git first."
+#     echo ""
+#     echo "   Visit: https://git-scm.com/install"
+#     exit 1
+# fi
 
 # Check if mdbook is installed
 if ! command -v mdbook &> /dev/null; then
