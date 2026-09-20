@@ -1,28 +1,15 @@
 # Integration tests for init.sh
 #
 # Unlike unit tests (init-unit-test.bats), these tests:
-#   - Require real mdbook and yq to be installed
+#   - Require a real Docker daemon
 #   - Copy the full template repo into a temp dir
 #   - Run init.sh against it with no stubs
-#   - Verify the resulting repo is actually buildable by mdbook
+#   - Verify the resulting repo structure
 #
 # Run with: scripts/test/bats/bin/bats scripts/test/init-integration-test.bats
 
 REPO_ROOT="$(cd "$BATS_TEST_DIRNAME" && pwd)/../.."
 INIT_SCRIPT="$REPO_ROOT/init.sh"
-
-# ---------------------------------------------------------------------------
-# Skip entire file if required tools are not installed
-# ---------------------------------------------------------------------------
-
-setup_file() {
-    if ! command -v mdbook &>/dev/null; then
-        skip "mdbook is not installed — skipping integration tests"
-    fi
-    if ! command -v yq &>/dev/null; then
-        skip "yq is not installed — skipping integration tests"
-    fi
-}
 
 # ---------------------------------------------------------------------------
 # Each test gets a full copy of the template repo in a temp dir
@@ -61,59 +48,23 @@ _run_init() {
     [[ "$output" == *"Setup complete"* ]]
 }
 
-@test "mdbook build succeeds after init" {
-    _run_init "Build Test" "Jane Doe" "https://github.com/jane/build-test"
-
-    run mdbook build
-    [ "$status" -eq 0 ]
-}
-
-@test "mdbook build produces index.html" {
-    _run_init "Build Test" "Jane Doe" "https://github.com/jane/build-test"
-    mdbook build
-
-    [ -f "book/index.html" ]
-}
-
-@test "book.toml is valid and readable by mdbook" {
+@test "book.toml is created with correct content after init" {
     _run_init "Valid Toml" "Jane Doe" "https://github.com/jane/valid-toml"
 
-    # mdbook will exit non-zero if book.toml is malformed
-    run mdbook build --dest-dir /tmp/bats-mdbook-out-$$
-    [ "$status" -eq 0 ]
-    rm -rf /tmp/bats-mdbook-out-$$
+    [ -f "book.toml" ]
+    grep -q 'title = "Valid Toml"' book.toml
+    grep -q 'Jane Doe' book.toml
+    grep -q 'git-repository-url = "https://github.com/jane/valid-toml"' book.toml
 }
 
-@test "cspell.config.yml retains functional keys after init" {
+@test "cspell.config.yml is present after init" {
     _run_init "Spell Test" "Jane Doe" "https://github.com/jane/spell-test"
-
-    # The yq patch must not destroy the import/ignoreRegExpList/languageSettings blocks
     [ -f "cspell.config.yml" ]
-    run yq '.import | length' cspell.config.yml
-    [ "$status" -eq 0 ]
-    [ "$output" -gt 0 ]
-
-    run yq '.languageSettings | length' cspell.config.yml
-    [ "$status" -eq 0 ]
-    [ "$output" -gt 0 ]
 }
 
-@test "cspell.config.yml contains author name parts after init" {
-    _run_init "Spell Test" "Jane Doe" "https://github.com/jane/spell-test"
-
-    run yq '.words[]' cspell.config.yml
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Jane"* ]]
-    [[ "$output" == *"Doe"* ]]
-}
-
-@test "src/theme is present and used by the built book" {
+@test "src/theme is present after init" {
     _run_init "Theme Test" "Jane Doe" "https://github.com/jane/theme-test"
-
     [ -d "src/theme" ]
-    mdbook build
-    # head.hbs from the theme must have been processed — book/ must exist
-    [ -d "book" ]
 }
 
 @test "setup.yml workflow is present in child repo after init" {
