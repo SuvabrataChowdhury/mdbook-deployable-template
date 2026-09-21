@@ -75,8 +75,7 @@ else
     [[ -z "$REPO_URL" ]] && { echo "❌ Repository URL is required."; exit 1; }
 fi
 
-DOCKER_TARGET="release"
-[[ "${MDBOOK_USE_LOCAL:-}" == "true" ]] && DOCKER_TARGET="local"
+DOCKER_TARGET="release" #TODO: be able to pass this from command line
 
 docker build -t mdbook-build -f Dockerfile.setup \
     --target "$DOCKER_TARGET" \
