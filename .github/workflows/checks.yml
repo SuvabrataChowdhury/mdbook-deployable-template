@@ -53,3 +53,5 @@ jobs:
           submodules: recursive
       - name: Test Init Script
         run: scripts/test/bats/bin/bats scripts/test/init-unit-test.bats
+      - name: Test Update Script
+        run: scripts/test/bats/bin/bats scripts/test/update-unit-test.bats

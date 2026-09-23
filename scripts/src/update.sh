@@ -5,7 +5,7 @@ set -euo pipefail  # Exit on any error
 usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
-    echo "Initialize your mdbook project with the latest releases of the deployable template."
+    echo "Update your mdbook project with the latest releases of the deployable template."
     echo ""
     echo "Options:"
     echo "  -t, --template-version <version>  Template Version"

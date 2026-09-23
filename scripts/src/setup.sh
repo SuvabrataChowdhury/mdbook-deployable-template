@@ -75,9 +75,10 @@ EOF
 	cp -r .child-github/ISSUE_TEMPLATE .github/
 	cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
 
-	# Remove LICENSE and CONTRIBUTING.md in child repo as author should add them manually if needed.
+	# Remove LICENSE, CONTRIBUTING.md and architecture in child repo as author should add them manually if needed.
 	rm -f LICENSE
 	rm -f CONTRIBUTING.md
+	rm -f architecture.excalidraw
 
 	# Remove init.sh so that script does not changes itself
 	rm -f init.sh
