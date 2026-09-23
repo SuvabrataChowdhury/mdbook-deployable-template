@@ -14,8 +14,16 @@ usage() {
     echo "If options are omitted, the script will prompt interactively."
     echo "Please refer the github releases for getting the valid version. https://github.com/SuvabrataChowdhury/mdbook-deployable-template/releases"
     echo ""
+    echo "Environment Variables:"
+    echo "  MDBOOK_USE_LOCAL=true  Use the local working tree instead of pulling from GitHub."
+    echo "                         Useful for testing local changes before publishing a release."
+    echo "                         Note: --template-version is still required but ignored by Docker."
+    echo ""
     echo "Example:"
     echo "  $0 --template-version \"v1.0.0\""
+    echo ""
+    echo "  # Test with local changes:"
+    echo "  MDBOOK_USE_LOCAL=true $0 --template-version \"v1.0.0\""
 }
 
 TEMPLATE_VERSION=""

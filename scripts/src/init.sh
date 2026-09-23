@@ -18,8 +18,15 @@ usage() {
     echo ""
     echo "If options are omitted, the script will prompt interactively."
     echo ""
+    echo "Environment Variables:"
+    echo "  MDBOOK_USE_LOCAL=true  Use the local working tree instead of pulling from GitHub."
+    echo "                         Useful for testing local changes before publishing a release."
+    echo ""
     echo "Example:"
     echo "  $0 --title \"My Book\" --author \"Jane Doe\" --repo https://github.com/jane/my-book"
+    echo ""
+    echo "  # Test with local changes:"
+    echo "  MDBOOK_USE_LOCAL=true $0 --title \"My Book\" --author \"Jane Doe\" --repo https://github.com/jane/my-book"
 }
 
 BOOK_TITLE=""
