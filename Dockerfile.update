@@ -1,0 +1,29 @@
+FROM alpine/git:latest AS cloning-stage
+ARG TEMPLATE_VERSION
+WORKDIR /template
+RUN git clone --branch main --single-branch https://github.com/SuvabrataChowdhury/mdbook-deployable-template.git && \
+    cd mdbook-deployable-template && \
+    git checkout "${TEMPLATE_VERSION}" && \
+	rm -rf .git
+
+FROM peaceiris/mdbook:latest AS mdbook-binary
+
+FROM mikefarah/yq:latest AS yq-binary
+
+FROM alpine:latest AS base-builder
+RUN apk add --no-cache bash
+COPY --from=mdbook-binary /usr/bin/mdbook /usr/local/bin/mdbook
+COPY --from=yq-binary /usr/bin/yq /usr/local/bin/yq
+
+# release target: uses the latest stable release cloned from GitHub (default for end users)
+FROM base-builder AS release
+COPY --from=cloning-stage /template/mdbook-deployable-template /template/mdbook-deployable-template
+RUN cd /template/mdbook-deployable-template && \
+    ./scripts/src/remove_customizable_files.sh
+
+# local target: uses the local working tree instead of cloning (used by integration tests)
+FROM base-builder AS local
+COPY . /template/mdbook-deployable-template
+RUN cd /template/mdbook-deployable-template && \
+    ./scripts/src/remove_customizable_files.sh
+
