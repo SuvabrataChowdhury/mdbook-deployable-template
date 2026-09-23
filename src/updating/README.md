@@ -33,11 +33,11 @@ Only **template-owned files** are updated. Your content is never touched.
 
 3. Run the update script:
     ```bash
-    ./scripts/src/update.sh --template-version "v1.2.0"
+    .update.sh --template-version "v1.2.0"
     ```
     Or run it without flags to be prompted interactively:
     ```bash
-    ./scripts/src/update.sh
+    ./update.sh
     ```
 
 4. Review the changes, then commit and open a pull request:
