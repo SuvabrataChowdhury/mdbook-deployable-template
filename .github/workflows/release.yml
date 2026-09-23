@@ -18,6 +18,10 @@ jobs:
         run: scripts/test/bats/bin/bats scripts/test/init-unit-test.bats
       - name: Integration Test Init Script
         run: scripts/test/bats/bin/bats scripts/test/init-integration-test.bats
+      - name: Unit Test Update Script
+        run: scripts/test/bats/bin/bats scripts/test/update-unit-test.bats
+      - name: Integration Test Update Script
+        run: scripts/test/bats/bin/bats scripts/test/update-integration-test.bats
   release:
     name: Release Project
     needs: test
