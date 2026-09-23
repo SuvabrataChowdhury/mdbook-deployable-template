@@ -40,6 +40,13 @@ if [[ -z "$TEMPLATE_VERSION" ]]; then
     [[ -z "$TEMPLATE_VERSION" ]] && { echo "❌ Template Version is required."; exit 1; }
 fi
 
+if ! command -v docker &> /dev/null; then
+    echo "❌ Docker is not installed. Please install docker first."
+    echo ""
+    echo "   Visit: https://www.docker.com/products/docker-desktop/"
+    exit 1
+fi
+
 DOCKER_TARGET="release"
 [[ "${MDBOOK_USE_LOCAL:-}" == "true" ]] && DOCKER_TARGET="local"
 docker build -t mdbook-update-build -f Dockerfile.update \
