@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "$(dirname "${BASH_SOURCE[0]}")/setup_child_github.sh"
+
 set -euo pipefail
 
 setup() {
@@ -69,14 +71,7 @@ EOF
 	done
 
 	# Include child repo's pr and issue templates
-	rm -rf .github/ISSUE_TEMPLATE/*
-	rm -f .github/PULL_REQUEST_TEMPLATE.md
-	rm -f .github/dependabot.yml	# TODO: check if removing dependabot is a good idea for child repo
-	rm -f .github/workflows/lint_pr.yml  # as child repo does not need these checks
-	rm -f .github/workflows/release.yml  # child repos do not have releases
-
-	cp -r .child-github/ISSUE_TEMPLATE .github/
-	cp .child-github/PULL_REQUEST_TEMPLATE.md .github/
+	setup-child-github
 
 	# Remove LICENSE, CONTRIBUTING.md and architecture in child repo as author should add them manually if needed.
 	rm -f LICENSE

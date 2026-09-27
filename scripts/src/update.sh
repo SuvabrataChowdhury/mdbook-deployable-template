@@ -54,6 +54,10 @@ docker build -t mdbook-update-build -f Dockerfile.update \
     --build-arg TEMPLATE_VERSION="$TEMPLATE_VERSION" .
 
 CONTAINER_ID=$(docker create mdbook-update-build)
+# Clear template-owned directories before docker cp so removed files don't linger.
+# docker cp merges onto the host; it does not delete files that were removed inside
+# the container. .github is fully template-owned so it is safe to wipe and replace.
+rm -rf .github
 docker cp "$CONTAINER_ID":/template/mdbook-deployable-template/. .
 docker rm "$CONTAINER_ID"
 

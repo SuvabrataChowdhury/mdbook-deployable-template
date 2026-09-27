@@ -110,3 +110,28 @@ _run_update() {
     _run_update "v1.0.0"
     [ -f ".github/actions/install-mdbook/action.yml" ]
 }
+
+@test "lint_pr.yml is absent after update (template-only workflow removed)" {
+    _run_update "v1.0.0"
+    [ ! -f ".github/workflows/lint_pr.yml" ]
+}
+
+@test "release.yml is absent after update (template-only workflow removed)" {
+    _run_update "v1.0.0"
+    [ ! -f ".github/workflows/release.yml" ]
+}
+
+@test "dependabot.yml is absent after update (template-only file removed)" {
+    _run_update "v1.0.0"
+    [ ! -f ".github/dependabot.yml" ]
+}
+
+@test "child PULL_REQUEST_TEMPLATE.md is present after update" {
+    _run_update "v1.0.0"
+    [ -f ".github/PULL_REQUEST_TEMPLATE.md" ]
+}
+
+@test "child ISSUE_TEMPLATE directory is present after update" {
+    _run_update "v1.0.0"
+    [ -d ".github/ISSUE_TEMPLATE" ]
+}

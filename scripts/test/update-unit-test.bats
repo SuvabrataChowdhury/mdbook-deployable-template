@@ -38,6 +38,10 @@ _setup_fake_child_repo() {
     cp "$REPO_ROOT/.github/workflows/setup.yml"   "$dir/.github/workflows/setup.yml"
     cp "$REPO_ROOT/.github/actions/install-mdbook/action.yml" \
        "$dir/.github/actions/install-mdbook/action.yml"
+    # Template-only files that setup_child_github.sh should remove
+    touch "$dir/.github/workflows/lint_pr.yml"
+    touch "$dir/.github/workflows/release.yml"
+    touch "$dir/.github/dependabot.yml"
 }
 
 # ---------------------------------------------------------------------------
@@ -79,16 +83,18 @@ case "\$SUBCOMMAND" in
         exit 0
         ;;
     cp)
-        # Simulate what the container produced: customizable files are absent,
-        # template-owned files are present. Only copy template-owned files —
-        # do NOT delete the user's local customizable files (that is intentional
-        # behaviour: update preserves user content).
+        # Simulate the container output: template-owned files only.
+        # update.sh pre-clears .github before docker cp, so files absent from
+        # the container (lint_pr.yml, release.yml, dependabot.yml) are already
+        # gone by this point — no need to rm them here.
         mkdir -p .github/workflows .github/actions/install-mdbook
         cp "$REPO_ROOT/.github/workflows/checks.yml"  .github/workflows/checks.yml
         cp "$REPO_ROOT/.github/workflows/deploy.yml"  .github/workflows/deploy.yml
         cp "$REPO_ROOT/.github/workflows/setup.yml"   .github/workflows/setup.yml
         cp "$REPO_ROOT/.github/actions/install-mdbook/action.yml" \
            .github/actions/install-mdbook/action.yml
+        cp -r "$REPO_ROOT/.child-github/ISSUE_TEMPLATE" .github/
+        cp "$REPO_ROOT/.child-github/PULL_REQUEST_TEMPLATE.md" .github/
         exit 0
         ;;
     rm)
@@ -323,6 +329,66 @@ teardown() {
     env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
 
     [ -f ".github/actions/install-mdbook/action.yml" ]
+
+    rm -rf "$fake_bin"
+}
+
+@test "lint_pr.yml is absent after update (template-only workflow removed)" {
+    local fake_bin
+    fake_bin="$(mktemp -d)"
+    _make_stub_bin "$fake_bin"
+
+    env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
+
+    [ ! -f ".github/workflows/lint_pr.yml" ]
+
+    rm -rf "$fake_bin"
+}
+
+@test "release.yml is absent after update (template-only workflow removed)" {
+    local fake_bin
+    fake_bin="$(mktemp -d)"
+    _make_stub_bin "$fake_bin"
+
+    env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
+
+    [ ! -f ".github/workflows/release.yml" ]
+
+    rm -rf "$fake_bin"
+}
+
+@test "dependabot.yml is absent after update (template-only file removed)" {
+    local fake_bin
+    fake_bin="$(mktemp -d)"
+    _make_stub_bin "$fake_bin"
+
+    env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
+
+    [ ! -f ".github/dependabot.yml" ]
+
+    rm -rf "$fake_bin"
+}
+
+@test "child PULL_REQUEST_TEMPLATE.md is present after update" {
+    local fake_bin
+    fake_bin="$(mktemp -d)"
+    _make_stub_bin "$fake_bin"
+
+    env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
+
+    [ -f ".github/PULL_REQUEST_TEMPLATE.md" ]
+
+    rm -rf "$fake_bin"
+}
+
+@test "child ISSUE_TEMPLATE directory is present after update" {
+    local fake_bin
+    fake_bin="$(mktemp -d)"
+    _make_stub_bin "$fake_bin"
+
+    env PATH="$fake_bin:$PATH" bash "$UPDATE_SCRIPT" --template-version "v1.0.0"
+
+    [ -d ".github/ISSUE_TEMPLATE" ]
 
     rm -rf "$fake_bin"
 }
