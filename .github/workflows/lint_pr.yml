@@ -29,8 +29,8 @@ jobs:
           if [[ ! "$PR_TITLE" =~ $REGEX ]]; then
             echo "::error title=Invalid PR Title::The PR title '$PR_TITLE' is not valid."
             echo "Please use the format: <type>(<scope>): <description>"
-            echo "Available Types: $(echo $TYPES_PATTERN | tr '|' ', ')"
-            echo "Available Scopes: $(echo $SCOPES_PATTERN | tr '|' ', ')"
+            echo "Available Types: $(echo $TYPES_PATTERN | tr '|' ',')"
+            echo "Available Scopes: $(echo $SCOPES_PATTERN | tr '|' ',')"
             echo "Example: feat(script): added new mdbook plugin"
             exit 1
           fi
