@@ -9,3 +9,6 @@ site-url = "/mdbook-deployable-template/"
 mathjax-support = false
 smart-punctuation = false
 theme = "src/theme"
+
+[build]
+create-missing = false
