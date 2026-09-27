@@ -30,6 +30,9 @@ git-repository-url = "$REPO_URL"
 mathjax-support = false
 smart-punctuation = false
 theme = "src/theme"
+
+[build]
+create-missing = false
 EOF
 
 	echo "✅ Created book.toml with your project details"
