@@ -15,27 +15,18 @@ setup() {
 	# Remove existing mdbook files except the theme
 	cp -r ./src/theme ./
 	rm -rf ./src
-	rm -rf ./book.toml
+	mv ./book.toml ./book.toml.tmp # backup copy of book.toml
 
 	# Use mdbook to build author's project
 	mdbook init --title "$BOOK_TITLE" --ignore none .
 
 	# Initialize book.toml with user's info
-	cat > book.toml << EOF
-[book]
-title = "$BOOK_TITLE"
-authors = ["$AUTHOR_NAME"]
-language = "en"
+	mv ./book.toml.tmp ./book.toml 
 
-[output.html]
-git-repository-url = "$REPO_URL"
-mathjax-support = false
-smart-punctuation = false
-theme = "src/theme"
-
-[build]
-create-missing = false
-EOF
+	yq -i ".book.title = \"$BOOK_TITLE\"" book.toml
+	yq -i ".book.authors = [\"$AUTHOR_NAME\"]" book.toml
+	yq -i ".output.html[\"git-repository-url\"] |= \"$REPO_URL\"" book.toml
+	yq -i "del(.output.html[\"site-url\"])" book.toml
 
 	echo "✅ Created book.toml with your project details"
 
