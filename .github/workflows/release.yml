@@ -36,7 +36,7 @@ jobs:
 
       - name: Calculate Next Version
         id: semver
-        uses: PaulHatch/semantic-version@v6.0.4
+        uses: PaulHatch/semantic-version@v6.0.5
         with:
           tag_prefix: "v"
           major_pattern: "/^(feat|fix)\\(.+\\)!:/"
